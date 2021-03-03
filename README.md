@@ -1,2 +1,2 @@
 # Datazilla
-Repository for accenture development at Gama Academy
+Repository for Accenture development at Gama Academy
