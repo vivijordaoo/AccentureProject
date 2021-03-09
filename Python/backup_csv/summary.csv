@@ -1,249 +1,191 @@
-,Country,Slug,ISO2
-0,Austria,austria,AT
-1,Guam,guam,GU
-2,Heard and Mcdonald Islands,heard-and-mcdonald-islands,HM
-3,Kuwait,kuwait,KW
-4,Belize,belize,BZ
-5,Brunei Darussalam,brunei,BN
-6,Palestinian Territory,palestine,PS
-7,"Micronesia, Federated States of",micronesia,FM
-8,Niue,niue,NU
-9,ALA Aland Islands,ala-aland-islands,AX
-10,Andorra,andorra,AD
-11,Antigua and Barbuda,antigua-and-barbuda,AG
-12,Botswana,botswana,BW
-13,Gabon,gabon,GA
-14,Latvia,latvia,LV
-15,Sudan,sudan,SD
-16,Vanuatu,vanuatu,VU
-17,Malaysia,malaysia,MY
-18,Slovenia,slovenia,SI
-19,"Tanzania, United Republic of",tanzania,TZ
-20,Turkmenistan,turkmenistan,TM
-21,Bahrain,bahrain,BH
-22,Cayman Islands,cayman-islands,KY
-23,Japan,japan,JP
-24,Malawi,malawi,MW
-25,Yemen,yemen,YE
-26,Madagascar,madagascar,MG
-27,Venezuela (Bolivarian Republic),venezuela,VE
-28,Tokelau,tokelau,TK
-29,Côte d'Ivoire,cote-divoire,CI
-30,Montserrat,montserrat,MS
-31,Mozambique,mozambique,MZ
-32,Sierra Leone,sierra-leone,SL
-33,Slovakia,slovakia,SK
-34,Thailand,thailand,TH
-35,Denmark,denmark,DK
-36,Saudi Arabia,saudi-arabia,SA
-37,Colombia,colombia,CO
-38,Germany,germany,DE
-39,Ghana,ghana,GH
-40,Marshall Islands,marshall-islands,MH
-41,Namibia,namibia,NA
-42,Panama,panama,PA
-43,Hungary,hungary,HU
-44,"Iran, Islamic Republic of",iran,IR
-45,Lao PDR,lao-pdr,LA
-46,Wallis and Futuna Islands,wallis-and-futuna-islands,WF
-47,Mexico,mexico,MX
-48,Azerbaijan,azerbaijan,AZ
-49,Brazil,brazil,BR
-50,Central African Republic,central-african-republic,CF
-51,Czech Republic,czech-republic,CZ
-52,Angola,angola,AO
-53,Cambodia,cambodia,KH
-54,Canada,canada,CA
-55,Maldives,maldives,MV
-56,Jamaica,jamaica,JM
-57,Réunion,réunion,RE
-58,Serbia,serbia,RS
-59,British Indian Ocean Territory,british-indian-ocean-territory,IO
-60,Dominican Republic,dominican-republic,DO
-61,Nicaragua,nicaragua,NI
-62,Bhutan,bhutan,BT
-63,Romania,romania,RO
-64,Western Sahara,western-sahara,EH
-65,Grenada,grenada,GD
-66,Turkey,turkey,TR
-67,Suriname,suriname,SR
-68,Egypt,egypt,EG
-69,Haiti,haiti,HT
-70,Malta,malta,MT
-71,Norfolk Island,norfolk-island,NF
-72,Palau,palau,PW
-73,American Samoa,american-samoa,AS
-74,French Polynesia,french-polynesia,PF
-75,Norway,norway,NO
-76,Cape Verde,cape-verde,CV
-77,Bangladesh,bangladesh,BD
-78,Burkina Faso,burkina-faso,BF
-79,Indonesia,indonesia,ID
-80,Kenya,kenya,KE
-81,Uzbekistan,uzbekistan,UZ
-82,Cocos (Keeling) Islands,cocos-keeling-islands,CC
-83,South Georgia and the South Sandwich Islands,south-georgia-and-the-south-sandwich-islands,GS
-84,Chad,chad,TD
-85,United Kingdom,united-kingdom,GB
-86,Costa Rica,costa-rica,CR
-87,Cyprus,cyprus,CY
-88,Iraq,iraq,IQ
-89,Nepal,nepal,NP
-90,Saint Vincent and Grenadines,saint-vincent-and-the-grenadines,VC
-91,Saint-Barthélemy,saint-barthélemy,BL
-92,Bahamas,bahamas,BS
-93,Comoros,comoros,KM
-94,Croatia,croatia,HR
-95,Puerto Rico,puerto-rico,PR
-96,United States of America,united-states,US
-97,"Macedonia, Republic of",macedonia,MK
-98,New Caledonia,new-caledonia,NC
-99,Tonga,tonga,TO
-100,United Arab Emirates,united-arab-emirates,AE
-101,China,china,CN
-102,Kazakhstan,kazakhstan,KZ
-103,Monaco,monaco,MC
-104,Paraguay,paraguay,PY
-105,Tajikistan,tajikistan,TJ
-106,Portugal,portugal,PT
-107,Tuvalu,tuvalu,TV
-108,Christmas Island,christmas-island,CX
-109,Dominica,dominica,DM
-110,Eritrea,eritrea,ER
-111,French Guiana,french-guiana,GF
-112,Korea (South),korea-south,KR
-113,Turks and Caicos Islands,turks-and-caicos-islands,TC
-114,Honduras,honduras,HN
-115,Pakistan,pakistan,PK
-116,South Sudan,south-sudan,SS
-117,Sweden,sweden,SE
-118,Switzerland,switzerland,CH
-119,Armenia,armenia,AM
-120,Bosnia and Herzegovina,bosnia-and-herzegovina,BA
-121,Martinique,martinique,MQ
-122,Samoa,samoa,WS
-123,Bermuda,bermuda,BM
-124,Chile,chile,CL
-125,Ecuador,ecuador,EC
-126,Qatar,qatar,QA
-127,Togo,togo,TG
-128,Swaziland,swaziland,SZ
-129,Antarctica,antarctica,AQ
-130,Greenland,greenland,GL
-131,Lesotho,lesotho,LS
-132,Mongolia,mongolia,MN
-133,Montenegro,montenegro,ME
-134,Senegal,senegal,SN
-135,British Virgin Islands,british-virgin-islands,VG
-136,Bulgaria,bulgaria,BG
-137,Cook Islands,cook-islands,CK
-138,Solomon Islands,solomon-islands,SB
-139,Belarus,belarus,BY
-140,Congo (Brazzaville),congo-brazzaville,CG
-141,Mayotte,mayotte,YT
-142,Nigeria,nigeria,NG
-143,Equatorial Guinea,equatorial-guinea,GQ
-144,Saint-Martin (French part),saint-martin-french-part,MF
-145,Argentina,argentina,AR
-146,Falkland Islands (Malvinas),falkland-islands-malvinas,FK
-147,South Africa,south-africa,ZA
-148,"Hong Kong, SAR China",hong-kong-sar-china,HK
-149,Seychelles,seychelles,SC
-150,Singapore,singapore,SG
-151,Republic of Kosovo,kosovo,XK
-152,Saint Lucia,saint-lucia,LC
-153,US Minor Outlying Islands,us-minor-outlying-islands,UM
-154,Bolivia,bolivia,BO
-155,Faroe Islands,faroe-islands,FO
-156,Kyrgyzstan,kyrgyzstan,KG
-157,Netherlands Antilles,netherlands-antilles,AN
-158,Djibouti,djibouti,DJ
-159,Fiji,fiji,FJ
-160,Lebanon,lebanon,LB
-161,Italy,italy,IT
-162,Libya,libya,LY
-163,"Macao, SAR China",macao-sar-china,MO
-164,Philippines,philippines,PH
-165,Benin,benin,BJ
-166,Georgia,georgia,GE
-167,Myanmar,myanmar,MM
-168,Saint Kitts and Nevis,saint-kitts-and-nevis,KN
-169,Syrian Arab Republic (Syria),syria,SY
-170,Burundi,burundi,BI
-171,Gambia,gambia,GM
-172,Jordan,jordan,JO
-173,Northern Mariana Islands,northern-mariana-islands,MP
-174,Uganda,uganda,UG
-175,Barbados,barbados,BB
-176,Gibraltar,gibraltar,GI
-177,Albania,albania,AL
-178,Anguilla,anguilla,AI
-179,Kiribati,kiribati,KI
-180,Lithuania,lithuania,LT
-181,Russian Federation,russia,RU
-182,Ethiopia,ethiopia,ET
-183,Jersey,jersey,JE
-184,Peru,peru,PE
-185,Somalia,somalia,SO
-186,Sri Lanka,sri-lanka,LK
-187,Mauritius,mauritius,MU
-188,Ukraine,ukraine,UA
-189,Mali,mali,ML
-190,Oman,oman,OM
-191,Poland,poland,PL
-192,Sao Tome and Principe,sao-tome-and-principe,ST
-193,Timor-Leste,timor-leste,TL
-194,Papua New Guinea,papua-new-guinea,PG
-195,San Marino,san-marino,SM
-196,Aruba,aruba,AW
-197,Cameroon,cameroon,CM
-198,Guatemala,guatemala,GT
-199,Saint Pierre and Miquelon,saint-pierre-and-miquelon,PM
-200,Belgium,belgium,BE
-201,French Southern Territories,french-southern-territories,TF
-202,Liberia,liberia,LR
-203,Morocco,morocco,MA
-204,Trinidad and Tobago,trinidad-and-tobago,TT
-205,Korea (North),korea-north,KP
-206,Rwanda,rwanda,RW
-207,France,france,FR
-208,Guinea,guinea,GN
-209,India,india,IN
-210,Israel,israel,IL
-211,Finland,finland,FI
-212,Ireland,ireland,IE
-213,Nauru,nauru,NR
-214,"Virgin Islands, US",virgin-islands,VI
-215,Algeria,algeria,DZ
-216,Tunisia,tunisia,TN
-217,Uruguay,uruguay,UY
-218,Netherlands,netherlands,NL
-219,"Taiwan, Republic of China",taiwan,TW
-220,Zimbabwe,zimbabwe,ZW
-221,Estonia,estonia,EE
-222,Iceland,iceland,IS
-223,Luxembourg,luxembourg,LU
-224,Spain,spain,ES
-225,Guernsey,guernsey,GG
-226,Holy See (Vatican City State),holy-see-vatican-city-state,VA
-227,Niger,niger,NE
-228,Afghanistan,afghanistan,AF
-229,Guadeloupe,guadeloupe,GP
-230,Saint Helena,saint-helena,SH
-231,Zambia,zambia,ZM
-232,Bouvet Island,bouvet-island,BV
-233,El Salvador,el-salvador,SV
-234,Greece,greece,GR
-235,Guinea-Bissau,guinea-bissau,GW
-236,Liechtenstein,liechtenstein,LI
-237,Pitcairn,pitcairn,PN
-238,Australia,australia,AU
-239,Congo (Kinshasa),congo-kinshasa,CD
-240,Mauritania,mauritania,MR
-241,Svalbard and Jan Mayen Islands,svalbard-and-jan-mayen-islands,SJ
-242,Viet Nam,vietnam,VN
-243,Cuba,cuba,CU
-244,Guyana,guyana,GY
-245,Isle of Man,isle-of-man,IM
-246,Moldova,moldova,MD
-247,New Zealand,new-zealand,NZ
+,Country,CountryCode,NewConfirmed,TotalConfirmed,NewDeaths,TotalDeaths,NewRecovered,TotalRecovered,Date
+0,Afghanistan,AF,0,55876,0,2451,0,49402,2021-03-09T15:59:10.729Z
+1,Albania,AL,0,113580,0,1956,0,75887,2021-03-09T15:59:10.729Z
+2,Algeria,DZ,0,114382,0,3018,0,79187,2021-03-09T15:59:10.729Z
+3,Andorra,AD,0,11069,0,112,0,10661,2021-03-09T15:59:10.729Z
+4,Angola,AO,0,21108,0,515,0,19657,2021-03-09T15:59:10.729Z
+5,Antigua and Barbuda,AG,0,848,0,21,0,410,2021-03-09T15:59:10.729Z
+6,Argentina,AR,0,2154694,0,53121,0,1951540,2021-03-09T15:59:10.729Z
+7,Armenia,AM,0,175016,0,3225,0,164954,2021-03-09T15:59:10.729Z
+8,Australia,AU,15,29061,0,909,2,22931,2021-03-09T15:59:10.729Z
+9,Austria,AT,0,476980,0,8732,0,445032,2021-03-09T15:59:10.729Z
+10,Azerbaijan,AZ,0,236963,0,3247,0,229789,2021-03-09T15:59:10.729Z
+11,Bahamas,BS,0,8600,0,181,0,7415,2021-03-09T15:59:10.729Z
+12,Bahrain,BH,0,127255,0,473,0,120489,2021-03-09T15:59:10.729Z
+13,Bangladesh,BD,0,551175,0,8476,0,504120,2021-03-09T15:59:10.729Z
+14,Barbados,BB,0,3303,0,37,0,2847,2021-03-09T15:59:10.729Z
+15,Belarus,BY,0,296441,0,2047,0,287197,2021-03-09T15:59:10.729Z
+16,Belgium,BE,1117,789008,31,22292,0,0,2021-03-09T15:59:10.729Z
+17,Belize,BZ,0,12335,0,315,0,11926,2021-03-09T15:59:10.729Z
+18,Benin,BJ,0,6338,0,81,0,5383,2021-03-09T15:59:10.729Z
+19,Bhutan,BT,0,868,0,1,0,866,2021-03-09T15:59:10.729Z
+20,Bolivia,BO,0,254736,0,11845,0,199000,2021-03-09T15:59:10.729Z
+21,Bosnia and Herzegovina,BA,0,137291,0,5297,0,118720,2021-03-09T15:59:10.729Z
+22,Botswana,BW,0,32912,0,413,0,27765,2021-03-09T15:59:10.729Z
+23,Brazil,BR,32321,11051665,987,266398,86828,9826292,2021-03-09T15:59:10.729Z
+24,Brunei Darussalam,BN,0,190,0,3,0,182,2021-03-09T15:59:10.729Z
+25,Bulgaria,BG,0,263303,0,10764,0,214115,2021-03-09T15:59:10.729Z
+26,Burkina Faso,BF,0,12181,0,143,0,11816,2021-03-09T15:59:10.729Z
+27,Burundi,BI,0,2334,0,3,0,773,2021-03-09T15:59:10.729Z
+28,Cambodia,KH,0,1011,0,0,0,517,2021-03-09T15:59:10.729Z
+29,Cameroon,CM,0,36794,0,566,0,32936,2021-03-09T15:59:10.729Z
+30,Canada,CA,3766,760102,31,20350,4077,843901,2021-03-09T15:59:10.729Z
+31,Cape Verde,CV,0,15806,0,154,0,15133,2021-03-09T15:59:10.729Z
+32,Central African Republic,CF,0,5021,0,63,0,4920,2021-03-09T15:59:10.729Z
+33,Chad,TD,0,4193,0,146,0,3690,2021-03-09T15:59:10.729Z
+34,Chile,CL,4748,860533,86,21163,4239,809941,2021-03-09T15:59:10.729Z
+35,China,CN,17,101149,0,4838,17,95865,2021-03-09T15:59:10.729Z
+36,Colombia,CO,2205,2278861,95,60598,3578,2180777,2021-03-09T15:59:10.729Z
+37,Comoros,KM,0,3606,0,146,0,3427,2021-03-09T15:59:10.729Z
+38,Congo (Brazzaville),CG,0,9179,0,131,0,7514,2021-03-09T15:59:10.729Z
+39,Congo (Kinshasa),CD,0,26627,0,712,0,22432,2021-03-09T15:59:10.729Z
+40,Costa Rica,CR,0,206640,0,2833,0,187484,2021-03-09T15:59:10.729Z
+41,Croatia,HR,0,246608,0,5609,0,237645,2021-03-09T15:59:10.729Z
+42,Cuba,CU,0,56566,0,350,0,51709,2021-03-09T15:59:10.729Z
+43,Cyprus,CY,0,37230,0,233,0,2057,2021-03-09T15:59:10.729Z
+44,Czech Republic,CZ,0,1325291,0,21882,0,1135251,2021-03-09T15:59:10.729Z
+45,Côte d'Ivoire,CI,0,35331,0,204,0,32800,2021-03-09T15:59:10.729Z
+46,Denmark,DK,0,215955,0,2382,0,206519,2021-03-09T15:59:10.729Z
+47,Djibouti,DJ,0,6157,0,63,0,5935,2021-03-09T15:59:10.729Z
+48,Dominica,DM,0,144,0,0,0,130,2021-03-09T15:59:10.729Z
+49,Dominican Republic,DO,0,243526,0,3179,0,198386,2021-03-09T15:59:10.729Z
+50,Ecuador,EC,0,294618,0,16043,0,256009,2021-03-09T15:59:10.729Z
+51,Egypt,EG,0,187094,0,11038,0,144485,2021-03-09T15:59:10.729Z
+52,El Salvador,SV,0,60800,0,1915,0,56807,2021-03-09T15:59:10.729Z
+53,Equatorial Guinea,GQ,0,6371,0,96,0,5739,2021-03-09T15:59:10.729Z
+54,Eritrea,ER,0,2944,0,7,0,2436,2021-03-09T15:59:10.729Z
+55,Estonia,EE,0,76183,0,667,0,55641,2021-03-09T15:59:10.729Z
+56,Ethiopia,ET,0,167133,0,2442,0,138639,2021-03-09T15:59:10.729Z
+57,Fiji,FJ,0,66,0,2,0,57,2021-03-09T15:59:10.729Z
+58,Finland,FI,0,62522,0,774,0,46000,2021-03-09T15:59:10.729Z
+59,France,FR,0,3969612,0,89090,0,272887,2021-03-09T15:59:10.729Z
+60,Gabon,GA,0,16015,0,91,0,14047,2021-03-09T15:59:10.729Z
+61,Gambia,GM,0,4792,0,153,0,4203,2021-03-09T15:59:10.729Z
+62,Georgia,GE,0,272998,0,3591,0,266886,2021-03-09T15:59:10.729Z
+63,Germany,DE,5129,2513784,252,72236,8334,2322734,2021-03-09T15:59:10.729Z
+64,Ghana,GH,0,86465,0,647,0,80952,2021-03-09T15:59:10.729Z
+65,Greece,GR,0,206281,0,6797,0,93764,2021-03-09T15:59:10.729Z
+66,Grenada,GD,0,148,0,1,0,147,2021-03-09T15:59:10.729Z
+67,Guatemala,GT,0,178770,0,6479,0,165315,2021-03-09T15:59:10.729Z
+68,Guinea,GN,0,16912,0,97,0,15236,2021-03-09T15:59:10.729Z
+69,Guinea-Bissau,GW,0,3312,0,49,0,2671,2021-03-09T15:59:10.729Z
+70,Guyana,GY,0,8814,0,203,0,8171,2021-03-09T15:59:10.729Z
+71,Haiti,HT,0,12536,0,251,0,9828,2021-03-09T15:59:10.729Z
+72,Holy See (Vatican City State),VA,0,27,0,0,0,15,2021-03-09T15:59:10.729Z
+73,Honduras,HN,0,174243,0,4283,0,68085,2021-03-09T15:59:10.729Z
+74,Hungary,HU,0,468713,0,15988,0,336744,2021-03-09T15:59:10.729Z
+75,Iceland,IS,0,6064,0,29,0,6020,2021-03-09T15:59:10.729Z
+76,India,IN,15388,11244786,77,157930,16596,10899394,2021-03-09T15:59:10.729Z
+77,Indonesia,ID,0,1386556,0,37547,0,1203381,2021-03-09T15:59:10.729Z
+78,"Iran, Islamic Republic of",IR,0,1698005,0,60786,0,1449350,2021-03-09T15:59:10.729Z
+79,Iraq,IQ,0,731016,0,13596,0,664461,2021-03-09T15:59:10.729Z
+80,Ireland,IE,0,223651,0,4422,0,23364,2021-03-09T15:59:10.729Z
+81,Israel,IL,0,805116,0,5917,0,761326,2021-03-09T15:59:10.729Z
+82,Italy,IT,13882,3081368,318,100103,13893,2508732,2021-03-09T15:59:10.729Z
+83,Jamaica,JM,0,26904,0,454,0,14447,2021-03-09T15:59:10.729Z
+84,Japan,JP,621,439977,46,8301,0,418105,2021-03-09T15:59:10.729Z
+85,Jordan,JO,0,435130,0,4987,0,371454,2021-03-09T15:59:10.729Z
+86,Kazakhstan,KZ,0,268902,0,3186,0,246679,2021-03-09T15:59:10.729Z
+87,Kenya,KE,0,109164,0,1879,0,87623,2021-03-09T15:59:10.729Z
+88,Korea (South),KR,0,93263,0,1645,0,83900,2021-03-09T15:59:10.729Z
+89,Kuwait,KW,0,201898,0,1133,0,187122,2021-03-09T15:59:10.729Z
+90,Kyrgyzstan,KG,0,86583,0,1473,0,83575,2021-03-09T15:59:10.729Z
+91,Lao PDR,LA,0,47,0,0,0,42,2021-03-09T15:59:10.729Z
+92,Latvia,LV,0,90525,0,1699,0,80247,2021-03-09T15:59:10.729Z
+93,Lebanon,LB,0,397887,0,5089,0,312747,2021-03-09T15:59:10.729Z
+94,Lesotho,LS,0,10523,0,308,0,3922,2021-03-09T15:59:10.729Z
+95,Liberia,LR,0,2024,0,85,0,1892,2021-03-09T15:59:10.729Z
+96,Libya,LY,0,139658,0,2288,0,126878,2021-03-09T15:59:10.729Z
+97,Liechtenstein,LI,0,2592,0,54,0,2519,2021-03-09T15:59:10.729Z
+98,Lithuania,LT,0,202430,0,3336,0,188245,2021-03-09T15:59:10.729Z
+99,Luxembourg,LU,0,56677,0,663,0,53240,2021-03-09T15:59:10.729Z
+100,"Macedonia, Republic of",MK,0,107479,0,3206,0,95410,2021-03-09T15:59:10.729Z
+101,Madagascar,MG,0,20155,0,300,0,19543,2021-03-09T15:59:10.729Z
+102,Malawi,MW,0,32469,0,1070,0,23105,2021-03-09T15:59:10.729Z
+103,Malaysia,MY,0,314989,0,1177,0,294034,2021-03-09T15:59:10.729Z
+104,Maldives,MV,0,20919,0,64,0,18253,2021-03-09T15:59:10.729Z
+105,Mali,ML,0,8613,0,358,0,6450,2021-03-09T15:59:10.729Z
+106,Malta,MT,0,24599,0,334,0,21087,2021-03-09T15:59:10.729Z
+107,Marshall Islands,MH,0,4,0,0,0,4,2021-03-09T15:59:10.729Z
+108,Mauritania,MR,0,17340,0,442,0,16688,2021-03-09T15:59:10.729Z
+109,Mauritius,MU,0,641,0,10,0,588,2021-03-09T15:59:10.729Z
+110,Mexico,MX,1877,2130477,319,190923,5565,1675996,2021-03-09T15:59:10.729Z
+111,"Micronesia, Federated States of",FM,0,1,0,0,0,1,2021-03-09T15:59:10.729Z
+112,Moldova,MD,0,195602,0,4129,0,172242,2021-03-09T15:59:10.729Z
+113,Monaco,MC,0,2028,0,26,0,1850,2021-03-09T15:59:10.729Z
+114,Mongolia,MN,0,3372,0,3,0,2765,2021-03-09T15:59:10.729Z
+115,Montenegro,ME,0,80191,0,1085,0,70137,2021-03-09T15:59:10.729Z
+116,Morocco,MA,0,486325,0,8683,0,472544,2021-03-09T15:59:10.729Z
+117,Mozambique,MZ,0,62703,0,698,0,46594,2021-03-09T15:59:10.729Z
+118,Myanmar,MM,0,142045,0,3200,0,131679,2021-03-09T15:59:10.729Z
+119,Namibia,NA,0,40187,0,439,0,37578,2021-03-09T15:59:10.729Z
+120,Nepal,NP,0,274810,0,3011,0,270927,2021-03-09T15:59:10.729Z
+121,Netherlands,NL,3834,1123909,28,15861,0,0,2021-03-09T15:59:10.729Z
+122,New Zealand,NZ,0,2409,0,26,0,2304,2021-03-09T15:59:10.729Z
+123,Nicaragua,NI,0,6489,0,174,0,4225,2021-03-09T15:59:10.729Z
+124,Niger,NE,0,4828,0,177,0,4407,2021-03-09T15:59:10.729Z
+125,Nigeria,NG,0,158906,0,1982,0,138502,2021-03-09T15:59:10.729Z
+126,Norway,NO,0,75770,0,632,0,17998,2021-03-09T15:59:10.729Z
+127,Oman,OM,0,144404,0,1594,0,134684,2021-03-09T15:59:10.729Z
+128,Pakistan,PK,1353,593453,54,13281,3365,563823,2021-03-09T15:59:10.729Z
+129,Palestinian Territory,PS,0,198554,0,2157,0,176507,2021-03-09T15:59:10.729Z
+130,Panama,PA,0,345236,0,5934,0,332219,2021-03-09T15:59:10.729Z
+131,Papua New Guinea,PG,0,1670,0,16,0,846,2021-03-09T15:59:10.729Z
+132,Paraguay,PY,0,169860,0,3343,0,141682,2021-03-09T15:59:10.729Z
+133,Peru,PE,6212,1371176,173,47854,6880,1276245,2021-03-09T15:59:10.729Z
+134,Philippines,PH,0,597763,0,12521,0,545912,2021-03-09T15:59:10.729Z
+135,Poland,PL,0,1801083,0,45317,0,1494083,2021-03-09T15:59:10.729Z
+136,Portugal,PT,0,810459,0,16565,0,732346,2021-03-09T15:59:10.729Z
+137,Qatar,QA,0,167417,0,263,0,156299,2021-03-09T15:59:10.729Z
+138,Republic of Kosovo,XK,0,73735,0,1655,0,62200,2021-03-09T15:59:10.729Z
+139,Romania,RO,0,830563,0,20963,0,761631,2021-03-09T15:59:10.729Z
+140,Russian Federation,RU,10145,4284408,371,87985,10288,3878189,2021-03-09T15:59:10.729Z
+141,Rwanda,RW,0,19659,0,268,0,17911,2021-03-09T15:59:10.729Z
+142,Saint Kitts and Nevis,KN,0,41,0,0,0,41,2021-03-09T15:59:10.729Z
+143,Saint Lucia,LC,0,3871,0,46,0,3566,2021-03-09T15:59:10.729Z
+144,Saint Vincent and Grenadines,VC,0,1663,0,8,0,1027,2021-03-09T15:59:10.729Z
+145,Samoa,WS,0,3,0,0,0,2,2021-03-09T15:59:10.729Z
+146,San Marino,SM,0,3935,0,76,0,3434,2021-03-09T15:59:10.729Z
+147,Sao Tome and Principe,ST,0,1961,0,32,0,1584,2021-03-09T15:59:10.729Z
+148,Saudi Arabia,SA,0,380182,0,6534,0,371032,2021-03-09T15:59:10.729Z
+149,Senegal,SN,0,35959,0,925,0,30915,2021-03-09T15:59:10.729Z
+150,Serbia,RS,0,489530,0,4579,0,0,2021-03-09T15:59:10.729Z
+151,Seychelles,SC,0,3000,0,15,0,2743,2021-03-09T15:59:10.729Z
+152,Sierra Leone,SL,0,3921,0,79,0,2721,2021-03-09T15:59:10.729Z
+153,Singapore,SG,0,60046,0,29,0,59900,2021-03-09T15:59:10.729Z
+154,Slovakia,SK,0,323786,0,7921,0,255300,2021-03-09T15:59:10.729Z
+155,Slovenia,SI,0,195678,0,3897,0,181023,2021-03-09T15:59:10.729Z
+156,Solomon Islands,SB,0,18,0,0,0,14,2021-03-09T15:59:10.729Z
+157,Somalia,SO,0,8438,0,307,0,3932,2021-03-09T15:59:10.729Z
+158,South Africa,ZA,0,1521706,0,50803,0,1442045,2021-03-09T15:59:10.729Z
+159,South Sudan,SS,0,8870,0,102,0,4914,2021-03-09T15:59:10.729Z
+160,Spain,ES,11958,3160970,298,71436,0,150376,2021-03-09T15:59:10.729Z
+161,Sri Lanka,LK,0,86039,0,507,0,82513,2021-03-09T15:59:10.729Z
+162,Sudan,SD,0,30540,0,1915,0,23268,2021-03-09T15:59:10.729Z
+163,Suriname,SR,0,8980,0,175,0,8473,2021-03-09T15:59:10.729Z
+164,Swaziland,SZ,0,17188,0,658,0,15343,2021-03-09T15:59:10.729Z
+165,Sweden,SE,0,684961,0,13003,0,0,2021-03-09T15:59:10.729Z
+166,Switzerland,CH,0,565034,0,10056,0,317600,2021-03-09T15:59:10.729Z
+167,Syrian Arab Republic (Syria),SY,0,16042,0,1068,0,10454,2021-03-09T15:59:10.729Z
+168,"Taiwan, Republic of China",TW,0,976,0,10,0,932,2021-03-09T15:59:10.729Z
+169,Tajikistan,TJ,0,13308,0,90,0,13218,2021-03-09T15:59:10.729Z
+170,"Tanzania, United Republic of",TZ,0,509,0,21,0,183,2021-03-09T15:59:10.729Z
+171,Thailand,TH,0,26441,0,85,0,25777,2021-03-09T15:59:10.729Z
+172,Timor-Leste,TL,0,129,0,0,0,94,2021-03-09T15:59:10.729Z
+173,Togo,TG,0,7598,0,92,0,6340,2021-03-09T15:59:10.729Z
+174,Trinidad and Tobago,TT,0,7736,0,140,0,7503,2021-03-09T15:59:10.729Z
+175,Tunisia,TN,0,238017,0,8225,0,202994,2021-03-09T15:59:10.729Z
+176,Turkey,TR,0,2793632,0,29094,0,2632030,2021-03-09T15:59:10.729Z
+177,Uganda,UG,0,40479,0,334,0,15065,2021-03-09T15:59:10.729Z
+178,Ukraine,UA,5680,1455421,114,28616,1768,1242311,2021-03-09T15:59:10.729Z
+179,United Arab Emirates,AE,0,413332,0,1335,0,394649,2021-03-09T15:59:10.729Z
+180,United Kingdom,GB,4823,4235989,65,124801,2,11853,2021-03-09T15:59:10.729Z
+181,United States of America,US,44758,29038631,719,525752,0,0,2021-03-09T15:59:10.729Z
+182,Uruguay,UY,0,64700,0,658,0,55638,2021-03-09T15:59:10.729Z
+183,Uzbekistan,UZ,0,80219,0,622,0,78915,2021-03-09T15:59:10.729Z
+184,Vanuatu,VU,0,3,0,0,0,1,2021-03-09T15:59:10.729Z
+185,Venezuela (Bolivarian Republic),VE,0,142774,0,1391,0,134839,2021-03-09T15:59:10.729Z
+186,Viet Nam,VN,0,2524,0,35,0,1920,2021-03-09T15:59:10.729Z
+187,Yemen,YE,0,2545,0,653,0,1447,2021-03-09T15:59:10.729Z
+188,Zambia,ZM,0,82655,0,1132,0,78721,2021-03-09T15:59:10.729Z
+189,Zimbabwe,ZW,0,36289,0,1487,0,33872,2021-03-09T15:59:10.729Z

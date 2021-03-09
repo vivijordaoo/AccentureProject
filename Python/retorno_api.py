@@ -1,8 +1,9 @@
-
 import requests
 import json
 import pandas as pd
-
+from datetime import datetime
+from datetime import date
+import os.path
 class RetriveAPI:
     __url = str
     __campos = {}
@@ -23,8 +24,8 @@ class RetriveAPI:
 
     def dados_raw(self):
         response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response
-    
+        return response 
+
     def retorna_dataframe(self):
         raw_json = self.dados_raw().json()
         df = pd.DataFrame()
@@ -63,7 +64,6 @@ class RetriveAPI:
         for key in self.__campos.keys():    
             df[key] = pd.Series(val[key])
 
-        #df.to_csv(r'backup_csv/summary.csv')
         return df
 
 class Summary:
@@ -72,7 +72,9 @@ class Summary:
     __myRetrive = RetriveAPI(__url,  __campos, 'Countries')
 
     def retorna_dataframe(self):
-        return self.__myRetrive.retorna_dataframe()
+        df = self.__myRetrive.retorna_dataframe()
+        df.to_csv(r'backup_csv/summary.csv')
+        return df
     
 class Country:
     __url = "https://api.covid19api.com/countries"
@@ -80,34 +82,53 @@ class Country:
     __myRetrive = RetriveAPI(__url,  __campos)
 
     def retorna_dataframe(self):
-        return self.__myRetrive.retorna_dataframe()
-
+        df = self.__myRetrive.retorna_dataframe()
+        df.to_csv(r'backup_csv/country.csv')
+        return df
+    
 class All_Data:
     __url = "https://api.covid19api.com/all"
     __campos = {'Country': 'Country', 'Country': 'Country', 'CountryCode': 'CountryCode', 'Lat': 'Lat', 'Lon': 'Lon', 'Confirmed':'Confirmed', 'Deaths': 'Deaths', 'Recovered': 'Recovered', 'Active': 'Active', 'Date': 'Date'}
     __myRetrive = RetriveAPI(__url,  __campos)
 
     def retorna_dataframe(self):
-        return self.__myRetrive.retorna_dataframe()
+        df = self.__myRetrive.retorna_dataframe()
+        df.to_csv(r'backup_csv/country.csv')
+        return df
 class By_Country:
-    
     class_country = Country()
-    df = class_country.retorna_dataframe()
     __campos = {"Country" : "Country", "CountryCode": "CountryCode", "Province": "Province", "City": "City", "CityCode": "CityCode", "Lat": "Lat", "Lon": "Lon", "Confirmed": "Confirmed", "Deaths": "Deaths", "Recovered": "Recovered", "Active": "Active", "Date": "Date"}
-    df_int = pd.DataFrame()
-    result = pd.DataFrame()
-
+    
     def retorna_dataframe(self):
+        df = self.class_country.retorna_dataframe()
+        #print(df)
+        result = pd.DataFrame()
+
         for pais in df['Slug']:
-            __url = f"https://api.covid19api.com/total/country/{pais}"
-            #print(__url)
-            __myRetrive = RetriveAPI(__url,  self.__campos)
-            df_int = __myRetrive.retorna_dataframe()
-            #print(df_int)
-            result = df_int.append(df_int)
+            df_int = pd.DataFrame()
+            name = f'backup_csv/{pais}.csv'
+            if not os.path.isfile(name):
+                __url = f"https://api.covid19api.com/total/country/{pais}"
+                #print(__url)
+                __myRetrive = RetriveAPI(__url,  self.__campos)
+                df_int = __myRetrive.retorna_dataframe()
+                if not bool(df_int ):
+                    #print(df_int)
+                    df_int.to_csv(name)
+                    result = result.append(df_int)
+            else:
+                df_int = pd.read_csv(name)    
+                #print(df_int)
+                result = result.append(df_int)
+
+        #renumera a primera coluna
+        
+        result.to_csv(f'backup_csv/bycontry.csv')
+        #print(result)
         return result
 
 if __name__ == '__main__':
+    """
     campos = {'Country': 'Country', 'CountryCode': 'CountryCode', 'NewConfirmed': 'NewConfirmed', 'TotalConfirmed': 'TotalConfirmed', 'NewDeaths': 'NewDeaths', 'TotalDeaths': 'TotalDeaths', 'NewRecovered': 'NewRecovered', 'TotalRecovered': 'TotalRecovered', 'Date' : 'Date'}
 
     test = RetriveAPI("https://api.covid19api.com/summary", campos, 'Countries')
@@ -127,10 +148,13 @@ if __name__ == '__main__':
     country = Country()
     df = country.retorna_dataframe()
     print(df)    
+    """
 
     bycountry = By_Country()
     df = bycountry.retorna_dataframe()
+    #problema .. a coluna ID não foi "unificada"
     print(df)    
+    #print(df.keys())    
 
 
 
