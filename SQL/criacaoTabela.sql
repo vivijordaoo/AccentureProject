@@ -19,11 +19,11 @@
 */
 create table pais
 (
-	id				int 			not null auto_increment, #	pk
+	id			int 		not null auto_increment, #	pk
 	nome			varchar(50)     not null,
 	slug			varchar(50)     null,
-	sigla           varchar(2)      null,
-	CONSTRAINT 		pk_pais 		primary key (id)
+	sigla           	varchar(2)      null,
+	CONSTRAINT 		pk_pais 	primary key (id)
 );
 
 /*
@@ -34,24 +34,24 @@ create table pais
 */
 create table dados_paises
 (
-	id				int 			not null auto_increment, #	pk
-	id_pais			int				not null,	 			 #  fk pais
-	lat				decimal			not null,
-	lon				decimal 		not null,
-	confirmed		int				null,
-	deaths			int				null,
-	recovered		int				null,
-	active			int				null,
+	id			int 			not null auto_increment, # pk
+	id_pais			int			not null,	 	 # fk pais
+	lat			decimal			not null,
+	lon			decimal 		not null,
+	confirmed		int			null,
+	deaths			int			null,
+	recovered		int			null,
+	active			int			null,
 	date			datetime		not null,
 	
 	constraint 		pk_id			primary key (id),
-	constraint fk_dados_paises_pais foreign key (id_pais)
+	constraint fk_dados_paises_pais 		foreign key (id_pais)
 		references pais(id)
 );
 
 create table log 
 (
-	id			int			not null auto_increment, #pk
+	id		int		not null auto_increment, #pk
 	data		datetime	not null,
 	descricao	text		not null,
 	constraint 	pk_log		primary key (id)
