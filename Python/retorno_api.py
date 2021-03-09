@@ -23,9 +23,28 @@ class RetriveAPI:
         self.__url = url
 
     def dados_raw(self):
-        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response 
-
+        try:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Conectando a API....")
+            
+            response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
+            
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Conexão realizada com sucesso!")
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 404:
+                print("Result not found!")
+            return response 
+        except requests.exceptions.HTTPError as errh:
+            print(errh)
+        except requests.exceptions.ConnectionError as errc:
+            print(errc)
+        except requests.exceptions.Timeout as errt:
+            print(errt)
+        except requests.exceptions.RequestException as err:
+            print(err)
+            
     def retorna_dataframe(self):
         raw_json = self.dados_raw().json()
         df = pd.DataFrame()
@@ -122,7 +141,7 @@ class By_Country:
                 result = result.append(df_int)
 
         #renumera a primera coluna
-        
+
         result.to_csv(f'backup_csv/bycontry.csv')
         #print(result)
         return result
