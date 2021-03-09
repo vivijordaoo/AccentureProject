@@ -2,6 +2,8 @@ import pyodbc
 from datetime import date, datetime
 
 class BD(object):
+  def __init__(self):
+    self.conectorBD = self.conecta_BD()
 
   def conecta_BD(self):
       try:
@@ -20,9 +22,9 @@ class BD(object):
           f"Não foi possível se conectar com o BD...")
         return 0
 
-  def criar_tabelas(self, conectorBD):
+  def criar_tabelas(self):
     try:
-      conectorBD.execute("""create table PAIS
+      self.conectorBD.execute("""create table PAIS
                             (
                               id			int 		not null auto_increment, #	pk
                               nome			varchar(50)     not null,
@@ -31,7 +33,7 @@ class BD(object):
                               CONSTRAINT 		pk_pais 	primary key (id)
                             );""")
         
-      conectorBD.execute("""create table DADOS_PAISES
+      self.conectorBD.execute("""create table DADOS_PAISES
                             (
                               id			int 			not null auto_increment, # pk
                               id_pais			int			not null,	 	 # fk pais
@@ -47,17 +49,17 @@ class BD(object):
                               constraint fk_dados_paises_pais 		foreign key (id_pais)
                                 references pais(id)
                             );""")
-      conectorBD.commit()
+      self.conectorBD.commit()
     except Exception as error:
-      self.armazena_erros(conectorBD, "CRIAR TABELAS", error)
+      self.armazena_erros("CRIAR TABELAS", error)
   
-  def limpar_tabelas(self, conectorBD):
+  def limpar_tabelas(self):
     try:
-      conectorBD.execute(f"DELETE FROM PAIS;")
-      conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
-      conectorBD.commit()
+      self.conectorBD.execute(f"DELETE FROM PAIS;")
+      self.conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
+      self.conectorBD.commit()
     except Exception as error:
-      self.armazena_erros(conectorBD, "LIMPAR TABELAS", error)
+      self.armazena_erros("LIMPAR TABELAS", error)
 
 
   def armazena_paises(self, conectorBD, conectorAPI):
@@ -66,7 +68,7 @@ class BD(object):
         conectorBD.execute("INSERT INTO PAIS VALUES (?, ?)") 
         #Necessário preencher com os campos da API selecionada
       except Exception as error:
-        self.armazena_erros(conectorBD, item, error)
+        self.armazena_erros(item, error)
     conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
           f"Inserção concluída com sucesso!\n")
@@ -78,7 +80,7 @@ class BD(object):
         conectorBD.execute("INSERT INTO CASOS_CONFIRMADOS VALUES (?, ?, ?)")
         #Necessário preencher com os campos da API selecionada
       except Exception as error:
-        self.armazena_erros(conectorBD, item, error)
+        self.armazena_erros(item, error)
     conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
           f"Inserção concluída com sucesso!\n")
@@ -90,15 +92,15 @@ class BD(object):
         conectorBD.execute("INSERT INTO MORTES VALUES (?, ?, ?)")
         #Necessário preencher com os campos da API selecionada
       except Exception as error:
-        self.armazena_erros(conectorBD, item, error)
+        self.armazena_erros(item, error)
     conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
           f"Inserção concluída com sucesso!")
     pass
 
-  def armazena_erros(self, conectorBD, item, erro):
-    conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
+  def armazena_erros(self, item, erro):
+    self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
                       f"Registro que originou o problema: {item}."
                       f"Informações Técnicas: {str(erro)}")
-    conectorBD.commit()
+    self.conectorBD.commit()
     pass
