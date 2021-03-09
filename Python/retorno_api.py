@@ -28,6 +28,9 @@ class RetriveAPI:
     def retorna_dataframe(self):
         raw_json = self.dados_raw().json()
         df = pd.DataFrame()
+
+        if not bool(raw_json):
+            return df
         
         #print(raw_json)
         tjson = {}
@@ -89,78 +92,20 @@ class All_Data:
 class By_Country:
     
     class_country = Country()
-    __url = "https://api.covid19api.com/total/country/{0}"
-    __payload = {}
-    __headers= {}
-    __country_data = {}
-    __data_by_country = {}
-    __country_ok = []
-    __list_countries = list(class_country.retorna_dataframe()["Country"])
-
-    def get_url(self):
-        return self.__url
-    def set_url(self, url):
-        self.__url = url
-
-    def dados_raw(self):
-        for country in range(len(self.__list_countries)):
-            if requests.get(self.__url.format(self.__list_countries[country])).status_code == 200:
-                self.__country_data[self.__list_countries[country]] = requests.request("GET", self.__url.format(self.__list_countries[country]),
-                headers=self.__headers, data = self.__payload)
-                self.__country_ok.append(self.__list_countries[country])
-        return self.__country_data
+    df = class_country.retorna_dataframe()
+    __campos = {"Country" : "Country", "CountryCode": "CountryCode", "Province": "Province", "City": "City", "CityCode": "CityCode", "Lat": "Lat", "Lon": "Lon", "Confirmed": "Confirmed", "Deaths": "Deaths", "Recovered": "Recovered", "Active": "Active", "Date": "Date"}
+    df_int = pd.DataFrame()
+    result = pd.DataFrame()
 
     def retorna_dataframe(self):
-        Country = []
-        CountryCode = []
-        Province = []
-        City = []
-        CityCode = []
-        Lat = []
-        Lon = []
-        Confirmed = []
-        Deaths = []
-        Recovered = []
-        Active = []
-        Date = []
-
-        raw = self.dados_raw()
-
-        for country in self.__country_ok:
-            self.__data_by_country[country] = raw[country].json()
-
-        for country in self.__country_ok:
-            for pais in range(len(self.__data_by_country[country])):
-                Country.append(self.__data_by_country[country][pais]['Country'])
-                CountryCode.append(self.__data_by_country[country][pais]['CountryCode'])
-                Province.append(self.__data_by_country[country][pais]['Province'])
-                City.append(self.__data_by_country[country][pais]['City'])
-                CityCode.append(self.__data_by_country[country][pais]['CityCode'])
-                Lat.append(self.__data_by_country[country][pais]['Lat'])
-                Lon.append(self.__data_by_country[country][pais]['Lon'])
-                Confirmed.append(self.__data_by_country[country][pais]['Confirmed'])
-                Deaths.append(self.__data_by_country[country][pais]['Deaths'])
-                Recovered.append(self.__data_by_country[country][pais]['Recovered'])
-                Active.append(self.__data_by_country[country][pais]['Active'])
-                Date.append(self.__data_by_country[country][pais]['Date'])
-
-        df = pd.DataFrame()
-        df["Country"] = pd.Series(Country)
-        df["CountryCode"] = pd.Series(CountryCode)
-        df["Province"] = pd.Series(Province)
-        df["City"] = pd.Series(City)
-        df["CityCode"] = pd.Series(CityCode)
-        df["Lat"] = pd.Series(Lat)
-        df["Lon"] = pd.Series(Lon)
-        df["Confirmed"] = pd.Series(Confirmed)
-        df["Deaths"] = pd.Series(Deaths)
-        df["Recovered"] = pd.Series(Recovered)
-        df["Active"] = pd.Series(Active)
-        df["Date"] = pd.Series(Date, dtype='datetime64[ns]')
-
-        df.to_csv(r'backup_csv/by_country.csv')
-
-        return df
+        for pais in df['Slug']:
+            __url = f"https://api.covid19api.com/total/country/{pais}"
+            #print(__url)
+            __myRetrive = RetriveAPI(__url,  self.__campos)
+            df_int = __myRetrive.retorna_dataframe()
+            #print(df_int)
+            result = df_int.append(df_int)
+        return result
 
 if __name__ == '__main__':
     campos = {'Country': 'Country', 'CountryCode': 'CountryCode', 'NewConfirmed': 'NewConfirmed', 'TotalConfirmed': 'TotalConfirmed', 'NewDeaths': 'NewDeaths', 'TotalDeaths': 'TotalDeaths', 'NewRecovered': 'NewRecovered', 'TotalRecovered': 'TotalRecovered', 'Date' : 'Date'}
@@ -183,7 +128,9 @@ if __name__ == '__main__':
     df = country.retorna_dataframe()
     print(df)    
 
-    
+    bycountry = By_Country()
+    df = bycountry.retorna_dataframe()
+    print(df)    
 
 
 
