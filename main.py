@@ -12,14 +12,27 @@ df_by_country = pd.DataFrame()
 def baixaArquivoAPI():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe")
     df_sumary = API.Summary().retorna_dataframe()
+    global df_country
     df_country = API.Country().retorna_dataframe()
     df_by_country = API.By_Country().retorna_dataframe()
 
-    #print(df_country)
+    print(df_country.shape)
 
 def carregaDFTabela():
+    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")
     conectorBD = conn_BD.BD()
-    print(conectorBD)
+    conectorBD.armazena_paises(df_country)
+    #print(conectorBD)
+
+def criaTabela():
+    print(f"{datetime.now().strftime('%H:%M:%S')} Criando Tabelas no BD")
+    conectorBD = conn_BD.BD()
+    conectorBD.criar_tabelas()
+    
+def limpaTabela():
+    print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas no BD")
+    conectorBD = conn_BD.BD()
+    conectorBD.limpar_tabelas()
 
 def recebeOpcaoUsuario():
     opcao = "0"
@@ -50,11 +63,11 @@ if __name__ == '__main__':
 
         elif opcao == "2": #2 - Cria estrutura de tabelas no DB Selecionado
             print("Opção 2 - Cria estrutura de tabelas no DB Selecionado")
-            pass
+            criaTabela()
 
         elif opcao == "3": #3 - Limpar conteúdo das Tabelas
             print("Opção 3 - Limpar conteúdo das Tabelas")
-            pass
+            limpaTabela()
 
         elif opcao == "5": #5 - Carregar da API nas Tabelas
             print("Opção 5 - Carregar da API nas Tabelas")

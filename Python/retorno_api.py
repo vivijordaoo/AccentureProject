@@ -72,18 +72,26 @@ class Summary(object):
     __myRetrive = RetriveAPI(__url,  __campos, 'Countries')
 
     def retorna_dataframe(self):
-        df = self.__myRetrive.retorna_dataframe()
-        df.to_csv(r'Python/backup_csv/summary.csv')
+        name = r'Python/backup_csv/summary.csv'
+        if os.path.isfile(name):
+            df = pd.read_csv(name)    
+        else:
+            df = self.__myRetrive.retorna_dataframe()
+            df.to_csv(name)
         return df
-    
+
 class Country(object):
     __url = "https://api.covid19api.com/countries"
     __campos = {'Country': 'Country', 'Slug': 'Slug', 'ISO2': 'ISO2'}
     __myRetrive = RetriveAPI(__url,  __campos)
 
     def retorna_dataframe(self):
-        df = self.__myRetrive.retorna_dataframe()
-        df.to_csv(r'Python/backup_csv/country.csv')
+        name = r'Python/backup_csv/country.csv'
+        if os.path.isfile(name):
+            df = pd.read_csv(name)    
+        else:
+            df = self.__myRetrive.retorna_dataframe()
+            df.to_csv(name)
         return df
     
 class All_Data(object):
