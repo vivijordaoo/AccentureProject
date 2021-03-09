@@ -1,222 +1,168 @@
-
 import requests
 import json
 import pandas as pd
+from datetime import datetime
+from datetime import date
+import os.path
+class RetriveAPI(object):
+    __url = str
+    __campos = {}
+    __payload = {}
+    __headers= {}
+    __raiz = str
 
-class Summary:
+    def __init__(self, url : str, campos : dict, caminho_raiz: str = ''):
+        self.__url = url
+        self.__campos = campos
+        self.__raiz = caminho_raiz
+
+    def get_url(self):
+        return self.__url
+
+    def set_url(self, url):
+        self.__url = url
+
+    def dados_raw(self):
+        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
+        return response
+            
+    def retorna_dataframe(self):
+        raw_json = self.dados_raw().json()
+        df = pd.DataFrame()
+
+        if not bool(raw_json):
+            return df
+        
+        #print(raw_json)
+        tjson = {}
+        if self.__raiz != '':
+            tjson = raw_json[self.__raiz].copy()
+        else: 
+            tjson = raw_json.copy()
+
+        val = {}
+        for key in self.__campos.keys():
+            val[key] = []
+
+        #print(val)
+                
+        for item in tjson:
+            #print(item)
+            for key, valor in self.__campos.items():
+                #print(valor)
+                if type(valor) != list:
+                    #print(f"{valor} => ({item[valor]})")
+                    val[key].append(item[valor])
+                else:
+                    x = item.copy()
+                    for tt in range(len(valor)):
+                        x = x.get(valor[tt])   
+                    #print(f" ({x})")
+                    val[key].append(x)
+            #print(val)
+
+        for key in self.__campos.keys():    
+            df[key] = pd.Series(val[key])
+
+        return df
+
+class Summary(object):
     __url = "https://api.covid19api.com/summary"
-    __payload = {}
-    __headers= {}
+    __campos = {'Country': 'Country', 'CountryCode': 'CountryCode', 'NewConfirmed': 'NewConfirmed', 'TotalConfirmed': 'TotalConfirmed', 'NewDeaths': 'NewDeaths', 'TotalDeaths': 'TotalDeaths', 'NewRecovered': 'NewRecovered', 'TotalRecovered': 'TotalRecovered', 'Date' : 'Date'}
+    __myRetrive = RetriveAPI(__url,  __campos, 'Countries')
 
-    def get_url(self):
-        return self.__url
-    def set_url(self, url):
-        self.__url = url
-
-    def dados_raw(self):
-        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response
-    
     def retorna_dataframe(self):
-        raw_json = self.dados_raw().json()
-        df = pd.DataFrame()
-        Country = []
-        CountryCode = []
-        NewConfirmed = []
-        TotalConfirmed = []
-        NewDeaths = []
-        TotalDeaths = []
-        NewRecovered = []
-        TotalRecovered = []
-        Date = []
-
-        for pais in range(len(raw_json['Countries'])):
-            Country.append(raw_json["Countries"][pais]['Country'])
-            CountryCode.append(raw_json["Countries"][pais]['CountryCode'])
-            NewConfirmed.append(raw_json["Countries"][pais]['NewConfirmed'])
-            TotalConfirmed.append(raw_json["Countries"][pais]['TotalConfirmed'])            
-            NewDeaths.append(raw_json["Countries"][pais]['NewDeaths'])
-            TotalDeaths.append(raw_json["Countries"][pais]['TotalDeaths'])           
-            NewRecovered.append(raw_json["Countries"][pais]['NewRecovered'])
-            TotalRecovered.append(raw_json["Countries"][pais]['TotalRecovered'])
-            Date.append(raw_json["Countries"][pais]['Date'])        
-
-        df['Country'] = pd.Series(Country)
-        df['CountryCode'] = pd.Series(CountryCode)
-        df['NewConfirmed'] = pd.Series(NewConfirmed)
-        df['TotalConfirmed'] = pd.Series(TotalConfirmed)
-        df['NewDeaths'] = pd.Series(NewDeaths)
-        df['TotalDeaths'] = pd.Series(TotalDeaths)
-        df['NewRecovered'] = pd.Series(NewRecovered)
-        df['TotalRecovered'] = pd.Series(TotalRecovered)
-        df['Date'] = pd.Series(Date, dtype='datetime64[ns]') 
-
-        df.to_csv(r'backup_csv/summary.csv')
-
+        name = r'Python/backup_csv/summary.csv'
+        if os.path.isfile(name):
+            df = pd.read_csv(name)    
+        else:
+            df = self.__myRetrive.retorna_dataframe()
+            df.to_csv(name)
         return df
 
-class Country:
+class Country(object):
     __url = "https://api.covid19api.com/countries"
-    __payload = {}
-    __headers= {}
-
-    def get_url(self):
-        return self.__url
-    def set_url(self, url):
-        self.__url = url
-
-    def dados_raw(self):
-        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response
+    __campos = {'Country': 'Country', 'Slug': 'Slug', 'ISO2': 'ISO2'}
+    __myRetrive = RetriveAPI(__url,  __campos)
 
     def retorna_dataframe(self):
-        raw_json = self.dados_raw().json()
-        df = pd.DataFrame()
-        Country = []
-        Slug = []
-        ISO2 = []
-
-        for pais in range(len(raw_json)):
-            Country.append(raw_json[pais]['Country'])
-            Slug.append(raw_json[pais]['Slug'])
-            ISO2.append(raw_json[pais]['ISO2'])      
-
-        df['Country'] = pd.Series(Country)
-        df['Slug'] = pd.Series(Slug)
-        df['ISO2'] = pd.Series(ISO2)
-
-        df.to_csv(r'backup_csv/country.csv')
-
+        name = r'Python/backup_csv/country.csv'
+        if os.path.isfile(name):
+            df = pd.read_csv(name)    
+        else:
+            df = self.__myRetrive.retorna_dataframe()
+            df.to_csv(name)
         return df
-
-class All_Data:
+    
+class All_Data(object):
     __url = "https://api.covid19api.com/all"
-    __payload = {}
-    __headers= {}
-
-    def get_url(self):
-        return self.__url
-    def set_url(self, url):
-        self.__url = url
-
-    def dados_raw(self):
-        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response
+    __campos = {'Country': 'Country', 'Country': 'Country', 'CountryCode': 'CountryCode', 'Lat': 'Lat', 'Lon': 'Lon', 'Confirmed':'Confirmed', 'Deaths': 'Deaths', 'Recovered': 'Recovered', 'Active': 'Active', 'Date': 'Date'}
+    __myRetrive = RetriveAPI(__url,  __campos)
 
     def retorna_dataframe(self):
-        raw_json = self.dados_raw().json()
-        df = pd.DataFrame()
-        Country = []
-        CountryCode = []
-        Lat = []
-        Lon = []
-        Confirmed = []
-        Deaths = []
-        Recovered = []
-        Active = []
-        Date = []
-
-        for pais in range(len(raw_json)):
-            Country.append(raw_json[pais]['Country'])
-            CountryCode.append(raw_json[pais]['CountryCode'])
-            Lat.append(raw_json[pais]['Lat'])
-            Lon.append(raw_json[pais]['Lon'])
-            Confirmed.append(raw_json[pais]['Confirmed'])
-            Deaths.append(raw_json[pais]['Deaths'])
-            Recovered.append(raw_json[pais]['Recovered'])
-            Active.append(raw_json[pais]['Active'])
-            Date.append(raw_json[pais]['Date'])
-    
-
-        df['Country'] = pd.Series(Country)
-        df['CountryCode'] = pd.Series(CountryCode)
-        df['Lat'] = pd.Series(Lat)
-        df['Lon'] = pd.Series(Lon)
-        df['Confirmed'] = pd.Series(Confirmed)
-        df['Deaths'] = pd.Series(Deaths)
-        df['Recovered'] = pd.Series(Recovered)
-        df['Active'] = pd.Series(Active)
-        df['Date'] = pd.Series(Date)
-
-        df.to_csv(r'backup_csv/all_data.csv')
-
+        df = self.__myRetrive.retorna_dataframe()
+        df.to_csv(r'Python/backup_csv/country.csv')
         return df
-
-class By_Country:
-    
+class By_Country(object):
     class_country = Country()
-    __url = "https://api.covid19api.com/total/country/{0}"
-    __payload = {}
-    __headers= {}
-    __country_data = {}
-    __data_by_country = {}
-    __country_ok = []
-    __list_countries = list(class_country.retorna_dataframe()["Country"])
-
-    def get_url(self):
-        return self.__url
-    def set_url(self, url):
-        self.__url = url
-
-    def dados_raw(self):
-        for country in range(len(self.__list_countries)):
-            if requests.get(self.__url.format(self.__list_countries[country])).status_code == 200:
-                self.__country_data[self.__list_countries[country]] = requests.request("GET", self.__url.format(self.__list_countries[country]),
-                headers=self.__headers, data = self.__payload)
-                self.__country_ok.append(self.__list_countries[country])
-        return self.__country_data
-
+    __campos = {"Country" : "Country", "CountryCode": "CountryCode", "Province": "Province", "City": "City", "CityCode": "CityCode", "Lat": "Lat", "Lon": "Lon", "Confirmed": "Confirmed", "Deaths": "Deaths", "Recovered": "Recovered", "Active": "Active", "Date": "Date"}
+    
     def retorna_dataframe(self):
-        Country = []
-        CountryCode = []
-        Province = []
-        City = []
-        CityCode = []
-        Lat = []
-        Lon = []
-        Confirmed = []
-        Deaths = []
-        Recovered = []
-        Active = []
-        Date = []
+        df = self.class_country.retorna_dataframe()
+        #print(df)
+        result = pd.DataFrame()
 
-        raw = self.dados_raw()
+        for pais in df['Slug']:
+            df_int = pd.DataFrame()
+            name = f'Python/backup_csv/{pais}.csv'
+            if not os.path.isfile(name):
+                __url = f"https://api.covid19api.com/total/country/{pais}"
+                #print(__url)
+                __myRetrive = RetriveAPI(__url,  self.__campos)
+                df_int = __myRetrive.retorna_dataframe()
+                if not bool(df_int ):
+                    #print(df_int)
+                    df_int.to_csv(name)
+                    result = result.append(df_int)
+            else:
+                df_int = pd.read_csv(name)    
+                #print(df_int)
+                result = result.append(df_int)
 
-        for country in self.__country_ok:
-            self.__data_by_country[country] = raw[country].json()
+        #renumera a primera coluna
 
-        for country in self.__country_ok:
-            for pais in range(len(self.__data_by_country[country])):
-                Country.append(self.__data_by_country[country][pais]['Country'])
-                CountryCode.append(self.__data_by_country[country][pais]['CountryCode'])
-                Province.append(self.__data_by_country[country][pais]['Province'])
-                City.append(self.__data_by_country[country][pais]['City'])
-                CityCode.append(self.__data_by_country[country][pais]['CityCode'])
-                Lat.append(self.__data_by_country[country][pais]['Lat'])
-                Lon.append(self.__data_by_country[country][pais]['Lon'])
-                Confirmed.append(self.__data_by_country[country][pais]['Confirmed'])
-                Deaths.append(self.__data_by_country[country][pais]['Deaths'])
-                Recovered.append(self.__data_by_country[country][pais]['Recovered'])
-                Active.append(self.__data_by_country[country][pais]['Active'])
-                Date.append(self.__data_by_country[country][pais]['Date'])
+        result.to_csv(f'Python/backup_csv/bycontry.csv')
+        #print(result)
+        return result
 
-        df = pd.DataFrame()
-        df["Country"] = pd.Series(Country)
-        df["CountryCode"] = pd.Series(CountryCode)
-        df["Province"] = pd.Series(Province)
-        df["City"] = pd.Series(City)
-        df["CityCode"] = pd.Series(CityCode)
-        df["Lat"] = pd.Series(Lat)
-        df["Lon"] = pd.Series(Lon)
-        df["Confirmed"] = pd.Series(Confirmed)
-        df["Deaths"] = pd.Series(Deaths)
-        df["Recovered"] = pd.Series(Recovered)
-        df["Active"] = pd.Series(Active)
-        df["Date"] = pd.Series(Date, dtype='datetime64[ns]')
+if __name__ == '__main__':
+    """
+    campos = {'Country': 'Country', 'CountryCode': 'CountryCode', 'NewConfirmed': 'NewConfirmed', 'TotalConfirmed': 'TotalConfirmed', 'NewDeaths': 'NewDeaths', 'TotalDeaths': 'TotalDeaths', 'NewRecovered': 'NewRecovered', 'TotalRecovered': 'TotalRecovered', 'Date' : 'Date'}
 
-        df.to_csv(r'backup_csv/by_country.csv')
+    test = RetriveAPI("https://api.covid19api.com/summary", campos, 'Countries')
+    df = test.retorna_dataframe()
+    print(df)
 
-        return df
+    sumary = Summary()
+    df = sumary.retorna_dataframe()
+    print(df)
+
+    campos = {'Country': 'Country', 'Slug': 'Slug', 'ISO2': 'ISO2'}
+
+    test = RetriveAPI("https://api.covid19api.com/countries", campos)
+    df = test.retorna_dataframe()
+    print(df)
+
+    country = Country()
+    df = country.retorna_dataframe()
+    print(df)    
+    """
+
+    bycountry = By_Country()
+    df = bycountry.retorna_dataframe()
+    #problema .. a coluna ID não foi "unificada"
+    print(df)    
+    print(df.keys())    
 
 
 
