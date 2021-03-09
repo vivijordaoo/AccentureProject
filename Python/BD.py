@@ -2,6 +2,10 @@ import pyodbc
 from datetime import date, datetime
 
 class BD(object):
+  conector = pyodbc.connect()
+  
+  def __init__(self):
+    self.conecta_BD()
 
   def conecta_BD(self):
       try:
@@ -20,10 +24,10 @@ class BD(object):
           f"Não foi possível se conectar com o BD...")
         return 0
 
-  def armazena_paises(self, conectorBD, conectorAPI):
+  def armazena_paises(self, conectorAPI):
     for item in conectorAPI:
       try:
-        conectorBD.execute("INSERT INTO PAIS VALUES (?, ?)") 
+        self.conectorBD.execute("INSERT INTO PAIS VALUES (?, ?)") 
         #Necessário preencher com os campos da API selecionada
       except Exception as error:
         self.armazena_erros(conectorBD, item, error)
