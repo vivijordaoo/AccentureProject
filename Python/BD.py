@@ -20,6 +20,46 @@ class BD(object):
           f"Não foi possível se conectar com o BD...")
         return 0
 
+  def criar_tabelas(self, conectorBD):
+    try:
+      conectorBD.execute("""create table PAIS
+                            (
+                              id			int 		not null auto_increment, #	pk
+                              nome			varchar(50)     not null,
+                              slug			varchar(50)     null,
+                              sigla           	varchar(2)      null,
+                              CONSTRAINT 		pk_pais 	primary key (id)
+                            );""")
+        
+      conectorBD.execute("""create table DADOS_PAISES
+                            (
+                              id			int 			not null auto_increment, # pk
+                              id_pais			int			not null,	 	 # fk pais
+                              lat			decimal			not null,
+                              lon			decimal 		not null,
+                              confirmed		int			null,
+                              deaths			int			null,
+                              recovered		int			null,
+                              active			int			null,
+                              date			datetime		not null,
+                              
+                              constraint 		pk_id			primary key (id),
+                              constraint fk_dados_paises_pais 		foreign key (id_pais)
+                                references pais(id)
+                            );""")
+      conectorBD.commit()
+    except Exception as error:
+      self.armazena_erros(conectorBD, "CRIAR TABELAS", error)
+  
+  def limpar_tabelas(self, conectorBD):
+    try:
+      conectorBD.execute(f"DELETE FROM PAIS;")
+      conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
+      conectorBD.commit()
+    except Exception as error:
+      self.armazena_erros(conectorBD, "LIMPAR TABELAS", error)
+
+
   def armazena_paises(self, conectorBD, conectorAPI):
     for item in conectorAPI:
       try:
