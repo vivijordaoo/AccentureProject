@@ -19,11 +19,7 @@
 */
 create table pais
 (
-<<<<<<< Updated upstream
 	ID 				INT				NOT NULL IDENTITY(1, 1),  	--pk
-=======
-	id			int 		not null identity(1,1), #	pk
->>>>>>> Stashed changes
 	nome			varchar(50)     not null,
 	slug			varchar(50)     null,
 	sigla           	varchar(2)      null,
@@ -38,13 +34,8 @@ create table pais
 */
 create table dados_paises
 (
-<<<<<<< Updated upstream
 	ID 				INT				NOT NULL IDENTITY(1, 1),  --pk
 	id_pais			int			not null,	 	 --fk pais
-=======
-	id			int 			not null identity(1,1), # pk
-	id_pais			int			not null,	 	 # fk pais
->>>>>>> Stashed changes
 	lat			decimal			not null,
 	lon			decimal 		not null,
 	confirmed		int			null,
