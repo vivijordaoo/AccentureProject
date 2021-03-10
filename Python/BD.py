@@ -8,7 +8,7 @@ class BD(object):
   __username = 'tiago'
   __password = '251x2mdlltfd@'   
   __port= '1433'
-  __driver= '{ODBC Driver 17 for SQL Server}'
+  __driver= '{SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
 
   def __init__(self):
@@ -90,26 +90,30 @@ class BD(object):
 
     print(val)
 
-    try:
-      self.conectorBD.executemany(sql, val)
-      #Necessário preencher com os campos da API selecionada
-    except Exception as error:
-      self.armazena_erros("Armazena paises", error)
-    self.conectorBD.commit()
+    with self.conectorBD.cursor() as cursor:
+      #poderia ser executemany, mas por causa da namibia derruba tudo
+      for item in val:
+        try:
+          cursor.execute(sql, item)
+        except Exception as error:
+          self.armazena_erros(item.join(', '), error)
+          print(f"{datetime.now().strftime('%H:%M:%S')}: "
+              f"Inserção com erro {error}!\n")
+      
+      self.conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
           f"Inserção concluída com sucesso!\n")
     pass
 
   def armazena_paises(self, df_country):
     campos = {'NOME': 'Country', 'SLUG': 'Slug', 'SIGLA': 'ISO2'}
-    sql = "INSERT INTO PAIS(NOME, SLUG, SIGLA) VALUES (?, ?, ?);"
+    sql = f"INSERT INTO PAIS(NOME, SLUG, SIGLA) VALUES (?, ?, ?);"
     self.inserir(sql, campos, df_country)
 
   def armazena_dados_paises(self, df_by_country):
     campos = {'ID_PAIS':'CountryCode', 'LAT':'Lat', 'LON':'Lon', 'CONFIRMED':'Confirmed', 'DEATHS':'Deaths', 'RECOVERED':'Recovered',
     'ACTIVE':'Active', 'DATE':'Date'}
-    sql = """INSERT INTO DADOS_PAISES (ID_PAIS, LAT, LON, CONFIRMED, DEATHS, RECOVERED, ACTIVE, DATE)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
+    sql = f"INSERT INTO DADOS_PAISES (ID_PAIS, LAT, LON, CONFIRMED, DEATHS, RECOVERED, ACTIVE, DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
     with self.conectorBD.cursor() as cursor:
       cursor.execute("SELECT DISTINCT id, nome FROM PAIS;")
       for row in cursor.fetchall():

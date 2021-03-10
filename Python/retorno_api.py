@@ -61,9 +61,11 @@ class RetriveAPI(object):
                     val[key].append(x)
             #print(val)
 
+
         for key in self.__campos.keys():    
             df[key] = pd.Series(val[key])
 
+        df = df.fillna('')
         return df
 
 class Summary(object):

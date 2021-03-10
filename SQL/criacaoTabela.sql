@@ -20,8 +20,8 @@
 create table pais
 (
 	ID 				INT				NOT NULL IDENTITY(1, 1),  	--pk
-	nome			varchar(50)     not null,
-	slug			varchar(50)     null,
+	nome			varchar(100)     not null,
+	slug			varchar(100)     null,
 	sigla           	varchar(2)      null,
 	CONSTRAINT 		pk_pais 	primary key (id)
 );
