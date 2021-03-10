@@ -1,13 +1,14 @@
 import pyodbc
 from datetime import date, datetime
+import pandas as pd
 
 class BD(object):
-  __server = 'localhost'
-  __database = 'ATIVIDADE_02'
-  __username = 'sa'
-  __password = '251x2mdlltfd'   
-  __port= '1433'
-  __driver= '{SQL Server}'
+  __server = 'datazilla.mariadb.database.azure.com'
+  __database = 'datazilla'
+  __username = 'gballesteros'
+  __password = 'Admin2895'   
+  __port= '3306'
+  __driver= '{maria}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
 
   def __init__(self):
@@ -100,25 +101,18 @@ class BD(object):
 
   def armazena_paises(self, df_country):
     campos = {'NOME': 'Country', 'SLUG': 'Slug', 'SIGLA': 'ISO2'}
-    sql = "INSERT INTO PAIS(NOME, SLUG, SIGLA) VALUES (?, ?, ?)"
+    sql = "INSERT INTO PAIS(NOME, SLUG, SIGLA) VALUES (?, ?, ?);"
     self.inserir(sql, campos, df_country)
 
-  def armazena_dados_paises(self, conectorAPI):
-    #seleciona todos os paises e salva numa lista
-    #processa o dataframe e troca nome de pais pelo id do pais da lista acima
-    #monta o dicionario de campos para a tabela de dados_paises
-    #monta o insert de dados_paises
-    # chama o inserir
-    for item in conectorAPI:
-      try:
-        self.conectorBD.execute("INSERT INTO CASOS_CONFIRMADOS VALUES (?, ?, ?)")
-        #Necessário preencher com os campos da API selecionada
-      except Exception as error:
-        self.armazena_erros(item, error)
-    self.conectorBD.commit()
-    print(f"{datetime.now().strftime('%H:%M:%S')}: "
-          f"Inserção concluída com sucesso!\n")
-    pass
+  def armazena_dados_paises(self, df_by_country):
+    campos = {'ID_PAIS':'CountryCode', 'LAT':'Lat', 'LON':'Lon', 'CONFIRMED':'Confirmed', 'DEATHS':'Deaths', 'RECOVERED':'Recovered',
+    'ACTIVE':'Active', 'DATE':'Date'}
+    sql = """INSERT INTO DADOS_PAISES (ID_PAIS, LAT, LON, CONFIRMED, DEATHS, RECOVERED, ACTIVE, DATE)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
+    self.conectorBD.execute("SELECT id, nome FROM PAIS GROUP BY 1,2;")
+    for row in self.conectorBD.fetchall():
+      df_by_country[df_by_country['Country'].str.lower() == row.nome.lower()]['CountryCode'] = row.id
+    self.inserir(sql, campos, df_by_country)
 
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",

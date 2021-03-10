@@ -14,6 +14,7 @@ def baixaArquivoAPI():
     df_sumary = API.Summary().retorna_dataframe()
     global df_country
     df_country = API.Country().retorna_dataframe()
+    global df_by_country
     df_by_country = API.By_Country().retorna_dataframe()
 
     print(df_country.shape)
@@ -22,6 +23,7 @@ def carregaDFTabela():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")
     conectorBD = conn_BD.BD()
     conectorBD.armazena_paises(df_country)
+    conectorBD.armazena_dados_paises(df_by_country)
     #print(conectorBD)
 
 def criaTabela():
