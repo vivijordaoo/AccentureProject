@@ -19,7 +19,7 @@
 */
 create table pais
 (
-	id			int 		not null auto_increment, #	pk
+	ID 				INT				NOT NULL IDENTITY(1, 1),  	--pk
 	nome			varchar(50)     not null,
 	slug			varchar(50)     null,
 	sigla           	varchar(2)      null,
@@ -34,8 +34,8 @@ create table pais
 */
 create table dados_paises
 (
-	id			int 			not null auto_increment, # pk
-	id_pais			int			not null,	 	 # fk pais
+	ID 				INT				NOT NULL IDENTITY(1, 1),  --pk
+	id_pais			int			not null,	 	 --fk pais
 	lat			decimal			not null,
 	lon			decimal 		not null,
 	confirmed		int			null,
@@ -51,7 +51,7 @@ create table dados_paises
 
 create table log 
 (
-	id		int		not null auto_increment, #pk
+	ID 				INT				NOT NULL IDENTITY(1, 1), --pk
 	data		datetime	not null,
 	descricao	text		not null,
 	constraint 	pk_log		primary key (id)
