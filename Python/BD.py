@@ -3,12 +3,12 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  __server = 'datazilla.mariadb.database.azure.com'
-  __database = 'datazilla'
-  __username = 'gballesteros'
-  __password = 'Admin2895'   
-  __port= '3306'
-  __driver= '{maria}'
+  __server = 'jacobiano.database.windows.net'
+  __database = 'Datazilla'
+  __username = 'tiago'
+  __password = '251x2mdlltfd@'   
+  __port= '1433'
+  __driver= '{ODBC Driver 17 for SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
 
   def __init__(self):
@@ -25,13 +25,14 @@ class BD(object):
       except Exception as error:
         print(f"{datetime.now().strftime('%H:%M:%S')}: "
           f"Não foi possível se conectar com o BD...")
+        print(error)
         return 0
 
   def criar_tabelas(self):
     try:
       self.conectorBD.execute("""create table PAIS
                             (
-                              id			int 		not null auto_increment, #	pk
+                              id			int 		not null identity(1,1),
                               nome			varchar(50)     not null,
                               slug			varchar(50)     null,
                               sigla           	varchar(2)      null,
@@ -40,15 +41,15 @@ class BD(object):
         
       self.conectorBD.execute("""create table DADOS_PAISES
                             (
-                              id			int 			not null auto_increment, # pk
-                              id_pais			int			not null,	 	 # fk pais
+                              id			int 			not null identity(1,1),
+                              id_pais			int			not null,
                               lat			decimal			not null,
                               lon			decimal 		not null,
                               confirmed		int			null,
                               deaths			int			null,
                               recovered		int			null,
                               active			int			null,
-                              date			datetime		not null,
+                              date			date		not null,
                               
                               constraint 		pk_id			primary key (id),
                               constraint fk_dados_paises_pais 		foreign key (id_pais)
@@ -57,7 +58,7 @@ class BD(object):
 
       self.conectorBD.execute("""create table log 
                             (
-	                            id		int		not null auto_increment, #pk
+	                            id		int		not null identity(1,1),
 	                            data		datetime	not null,
 	                            descricao	text		not null,
 	                            constraint 	pk_log		primary key (id)
@@ -109,10 +110,11 @@ class BD(object):
     'ACTIVE':'Active', 'DATE':'Date'}
     sql = """INSERT INTO DADOS_PAISES (ID_PAIS, LAT, LON, CONFIRMED, DEATHS, RECOVERED, ACTIVE, DATE)
               VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
-    self.conectorBD.execute("SELECT id, nome FROM PAIS GROUP BY 1,2;")
-    for row in self.conectorBD.fetchall():
-      df_by_country[df_by_country['Country'].str.lower() == row.nome.lower()]['CountryCode'] = row.id
-    self.inserir(sql, campos, df_by_country)
+    with self.conectorBD.cursor() as cursor:
+      cursor.execute("SELECT DISTINCT id, nome FROM PAIS;")
+      for row in cursor.fetchall():
+        df_by_country[df_by_country['Country'].str.lower() == row.nome.lower()]['CountryCode'] = row.id
+      self.inserir(sql, campos, df_by_country)
 
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
