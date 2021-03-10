@@ -49,6 +49,22 @@ create table dados_paises
 		references pais(id)
 );
 
+create table sumary_paises
+(
+	ID 					INT			NOT NULL IDENTITY(1, 1),  --pk
+	id_pais				int			not null,	 	 --fk pais
+	NewConfirmed		int			null,
+	TotalConfirmed		int			null,
+	NewDeaths			int			null,
+	TotalDeaths			int			null,
+	NewRecovered		int			null,
+	TotalRecovered		int			null,
+	date			datetime		not null,
+	constraint 		pk_sumary		primary key (id),
+	constraint fk_sumary_pais 		foreign key (id_pais)
+		references pais(id)
+);
+
 create table log 
 (
 	ID 				INT				NOT NULL IDENTITY(1, 1), --pk

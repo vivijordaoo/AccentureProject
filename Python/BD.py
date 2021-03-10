@@ -56,6 +56,22 @@ class BD(object):
                                 references pais(id)
                             );""")
 
+      self.conectorBD.execute("""create table sumary_paises
+                            (
+	                            ID 					INT			NOT NULL IDENTITY(1, 1),  --pk
+	                            id_pais				int			not null,	 	 --fk pais
+	                            NewConfirmed		int			null,
+	                            TotalConfirmed		int			null,
+	                            NewDeaths			int			null,
+	                            TotalDeaths			int			null,
+	                            NewRecovered		int			null,
+	                            TotalRecovered		int			null,
+	                            date			datetime		not null,
+	                            constraint 		pk_sumary		primary key (id),
+	                            constraint fk_sumary_pais 		foreign key (id_pais)
+		                            references pais(id)
+                          );""")
+
       self.conectorBD.execute("""create table log 
                             (
 	                            id		int		not null identity(1,1),
@@ -71,8 +87,9 @@ class BD(object):
   
   def limpar_tabelas(self):
     try:
-      self.conectorBD.execute(f"DELETE FROM PAIS;")
       self.conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
+      self.conectorBD.execute(f"DELETE FROM SUMARY_PAISES;")
+      self.conectorBD.execute(f"DELETE FROM PAIS;")
       self.conectorBD.execute(f"DELETE FROM LOG;")
       self.conectorBD.commit()
     except Exception as error:
@@ -127,6 +144,7 @@ class BD(object):
         #print(row[0], row[1].lower())
         df_by_country.loc[df_by_country['Country'].str.lower() == row[1].lower(), 'CountryCode'] = row[0]
       #!!!!!  
+      # Grava as linhas q não encontrou pais no log
       #Remove as linhas sem ID (que não encontrou pais)
       df_by_country = df_by_country[df_by_country["CountryCode"] != 0]
       #print(df_by_country)
