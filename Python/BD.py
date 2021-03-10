@@ -96,7 +96,7 @@ class BD(object):
         try:
           cursor.execute(sql, item)
         except Exception as error:
-          self.armazena_erros(item.join(', '), error)
+          self.armazena_erros(', '.join(str(x) for x in item), error)
           print(f"{datetime.now().strftime('%H:%M:%S')}: "
               f"Inserção com erro {error}!\n")
       
@@ -123,6 +123,6 @@ class BD(object):
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
                       f"Registro que originou o problema: {item}."
-                      f"Informações Técnicas: {str(erro)}")
+                      f" Informações Técnicas: {str(erro)}")
     self.conectorBD.commit()
     pass
