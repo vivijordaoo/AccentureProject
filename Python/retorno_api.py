@@ -22,50 +22,50 @@ class RetriveAPI(object):
     def set_url(self, url):
         self.__url = url
 
-    def dados_raw(self):
-        response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
-        return response
-            
     def retorna_dataframe(self):
-        raw_json = self.dados_raw().json()
-        df = pd.DataFrame()
+        try:
+            response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
+            raw_json = response.json()
+            df = pd.DataFrame()
+    
+            #print(raw_json)
+            tjson = {}
+            if self.__raiz != '':
+                tjson = raw_json[self.__raiz].copy()
+            else: 
+                tjson = raw_json.copy()
 
-        if not bool(raw_json):
-            return df
-        
-        #print(raw_json)
-        tjson = {}
-        if self.__raiz != '':
-            tjson = raw_json[self.__raiz].copy()
-        else: 
-            tjson = raw_json.copy()
+            val = {}
+            for key in self.__campos.keys():
+                val[key] = []
 
-        val = {}
-        for key in self.__campos.keys():
-            val[key] = []
-
-        #print(val)
-                
-        for item in tjson:
-            #print(item)
-            for key, valor in self.__campos.items():
-                #print(valor)
-                if type(valor) != list:
-                    #print(f"{valor} => ({item[valor]})")
-                    val[key].append(item[valor])
-                else:
-                    x = item.copy()
-                    for tt in range(len(valor)):
-                        x = x.get(valor[tt])   
-                    #print(f" ({x})")
-                    val[key].append(x)
             #print(val)
+                    
+            for item in tjson:
+                #print(item)
+                for key, valor in self.__campos.items():
+                    #print(valor)
+                    if type(valor) != list:
+                        #print(f"{valor} => ({item[valor]})")
+                        val[key].append(item[valor])
+                    else:
+                        x = item.copy()
+                        for tt in range(len(valor)):
+                            x = x.get(valor[tt])   
+                        #print(f" ({x})")
+                        val[key].append(x)
+                #print(val)
 
 
-        for key in self.__campos.keys():    
-            df[key] = pd.Series(val[key])
+            for key in self.__campos.keys():    
+                df[key] = pd.Series(val[key])
 
-        df = df.fillna('')
+            df = df.fillna('')
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Cerregando do Buffer {error}!\n")
+            raise Exception(error)
+            
         return df
 
 class Summary(object):
@@ -75,11 +75,17 @@ class Summary(object):
 
     def retorna_dataframe(self):
         name = r'Python/backup_csv/summary.csv'
-        if os.path.isfile(name):
-            df = pd.read_csv(name)    
-        else:
+        try:
             df = self.__myRetrive.retorna_dataframe()
             df.to_csv(name)
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Cerregando do Buffer {error}!\n")
+            if os.path.isfile(name):
+                df = pd.read_csv(name)    
+            else:
+                df = pd.DataFrame()
+
         return df
 
 class Country(object):
@@ -89,11 +95,18 @@ class Country(object):
 
     def retorna_dataframe(self):
         name = r'Python/backup_csv/country.csv'
-        if os.path.isfile(name):
-            df = pd.read_csv(name)    
-        else:
+        try:
             df = self.__myRetrive.retorna_dataframe()
             df.to_csv(name)
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Cerregando do Buffer {error}!\n")
+            if os.path.isfile(name):
+                df = pd.read_csv(name)    
+            else:
+                df = pd.DataFrame()
+        #!!!!
+        #colocar o schema    
         return df
     
 class All_Data(object):
@@ -117,20 +130,23 @@ class By_Country(object):
         for pais in df['Slug']:
             df_int = pd.DataFrame()
             name = f'Python/backup_csv/{pais}.csv'
-            if not os.path.isfile(name):
+            try:
                 __url = f"https://api.covid19api.com/total/country/{pais}"
-                #print(__url)
+                #print(__url)             
                 __myRetrive = RetriveAPI(__url,  self.__campos)
                 df_int = __myRetrive.retorna_dataframe()
                 if not bool(df_int ):
                     #print(df_int)
                     df_int.to_csv(name)
-                    result = result.append(df_int)
-            else:
-                df_int = pd.read_csv(name)    
-                #print(df_int)
-                result = result.append(df_int)
-
+                    
+            except Exception as error:
+                print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                    f"Cerregando do Buffer {error}!\n")
+                if os.path.isfile(name):
+                    df_int = pd.read_csv(name)    
+                    #print(df_int)
+            result = result.append(df_int)
+ 
         #renumera a primera coluna
         result = result.fillna(0)
         result = result.astype({'CountryCode': int, "Confirmed": int, "Deaths": int, "Recovered": int, "Active": int})
@@ -147,21 +163,21 @@ if __name__ == '__main__':
     df = test.retorna_dataframe()
     print(df)
 
-    sumary = Summary()
-    df = sumary.retorna_dataframe()
-    print(df)
-
     campos = {'Country': 'Country', 'Slug': 'Slug', 'ISO2': 'ISO2'}
 
     test = RetriveAPI("https://api.covid19api.com/countries", campos)
     df = test.retorna_dataframe()
     print(df)
 
+    """
+    sumary = Summary()
+    df = sumary.retorna_dataframe()
+    print(df)
+
     country = Country()
     df = country.retorna_dataframe()
     print(df)    
-    """
-
+    
     bycountry = By_Country()
     df = bycountry.retorna_dataframe()
     #problema .. a coluna ID não foi "unificada"

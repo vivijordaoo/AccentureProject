@@ -3,10 +3,10 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  __server = 'jacobiano.database.windows.net'
-  __database = 'Datazilla'
-  __username = 'tiago'
-  __password = '251x2mdlltfd@'   
+  __server = 'datazilla.database.windows.net'
+  __database = 'datazilla'
+  __username = 'datazilla'
+  __password = 'gama123456@#$'   
   __port= '1433'
   __driver= '{SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password

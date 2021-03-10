@@ -1,74 +1,74 @@
 /*
-    "Country": "Afghanistan",
-    "CountryCode": "AF",
-    "Lat": "33.94",
-    "Lon": "67.71",
-    "Confirmed": 0,
-    "Deaths": 0,
-    "Recovered": 0,
-    "Active": 0,
-    "Date": "2020-01-22T00:00:00Z",
+    "COUNTRY": "AFGHANISTAN",
+    "COUNTRYCODE": "AF",
+    "LAT": "33.94",
+    "LON": "67.71",
+    "CONFIRMED": 0,
+    "DEATHS": 0,
+    "RECOVERED": 0,
+    "ACTIVE": 0,
+    "DATE": "2020-01-22T00:00:00Z",
 */
 /*
 [
     {
-        "Country": "Mexico",
-        "Slug": "mexico",
+        "COUNTRY": "MEXICO",
+        "SLUG": "MEXICO",
         "ISO2": "MX"
     },
 */
-create table pais
+CREATE TABLE PAIS
 (
-	ID 				INT				NOT NULL IDENTITY(1, 1),  	--pk
-	nome			varchar(100)     not null,
-	slug			varchar(100)     null,
-	sigla           	varchar(2)      null,
-	CONSTRAINT 		pk_pais 	primary key (id)
+	ID 				INT				NOT NULL IDENTITY(1, 1),  	--PK
+	NOME			VARCHAR(100)     NOT NULL,
+	SLUG			VARCHAR(100)     NULL,
+	SIGLA           	VARCHAR(2)      NULL,
+	CONSTRAINT 		PK_PAIS 	PRIMARY KEY (ID)
 );
 
 /*
-[{"Country":"Brazil","CountryCode":"BR",
-"Province":"","City":"","CityCode":"",
-"Lat":"-14.24","Lon":"-51.93",
-"Cases":0,"Status":"confirmed","Date":"2020-01-22T00:00:00Z"},
+[{"COUNTRY":"BRAZIL","COUNTRYCODE":"BR",
+"PROVINCE":"","CITY":"","CITYCODE":"",
+"LAT":"-14.24","LON":"-51.93",
+"CASES":0,"STATUS":"CONFIRMED","DATE":"2020-01-22T00:00:00Z"},
 */
-create table dados_paises
+CREATE TABLE DADOS_PAISES
 (
-	ID 				INT				NOT NULL IDENTITY(1, 1),  --pk
-	id_pais			int			not null,	 	 --fk pais
-	lat			decimal			not null,
-	lon			decimal 		not null,
-	confirmed		int			null,
-	deaths			int			null,
-	recovered		int			null,
-	active			int			null,
-	date			datetime		not null,
+	ID 				INT				NOT NULL IDENTITY(1, 1),  --PK
+	ID_PAIS			INT			NOT NULL,	 	 --FK PAIS
+	LAT			DECIMAL			NOT NULL,
+	LON			DECIMAL 		NOT NULL,
+	CONFIRMED		INT			NULL,
+	DEATHS			INT			NULL,
+	RECOVERED		INT			NULL,
+	ACTIVE			INT			NULL,
+	DATE			DATETIME		NOT NULL,
 	
-	constraint 		pk_id			primary key (id),
-	constraint fk_dados_paises_pais 		foreign key (id_pais)
-		references pais(id)
+	CONSTRAINT 		PK_ID			PRIMARY KEY (ID),
+	CONSTRAINT FK_DADOS_PAISES_PAIS 		FOREIGN KEY (ID_PAIS)
+		REFERENCES PAIS(ID)
 );
 
-create table sumary_paises
+CREATE TABLE SUMARY_PAISES
 (
-	ID 					INT			NOT NULL IDENTITY(1, 1),  --pk
-	id_pais				int			not null,	 	 --fk pais
-	NewConfirmed		int			null,
-	TotalConfirmed		int			null,
-	NewDeaths			int			null,
-	TotalDeaths			int			null,
-	NewRecovered		int			null,
-	TotalRecovered		int			null,
-	date			datetime		not null,
-	constraint 		pk_sumary		primary key (id),
-	constraint fk_sumary_pais 		foreign key (id_pais)
-		references pais(id)
+	ID 					INT			NOT NULL IDENTITY(1, 1),  --PK
+	ID_PAIS				INT			NOT NULL,	 	 --FK PAIS
+	NEWCONFIRMED		INT			NULL,
+	TOTALCONFIRMED		INT			NULL,
+	NEWDEATHS			INT			NULL,
+	TOTALDEATHS			INT			NULL,
+	NEWRECOVERED		INT			NULL,
+	TOTALRECOVERED		INT			NULL,
+	DATE			DATETIME		NOT NULL,
+	CONSTRAINT 		PK_SUMARY		PRIMARY KEY (ID),
+	CONSTRAINT FK_SUMARY_PAIS 		FOREIGN KEY (ID_PAIS)
+		REFERENCES PAIS(ID)
 );
 
-create table log 
+CREATE TABLE LOG 
 (
-	ID 				INT				NOT NULL IDENTITY(1, 1), --pk
-	data		datetime	not null,
-	descricao	text		not null,
-	constraint 	pk_log		primary key (id)
+	ID 				INT				NOT NULL IDENTITY(1, 1), --PK
+	DATE		DATETIME	NOT NULL,
+	DESCRICAO	TEXT		NOT NULL,
+	CONSTRAINT 	PK_LOG		PRIMARY KEY (ID)
 );
