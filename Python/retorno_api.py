@@ -132,7 +132,9 @@ class By_Country(object):
                 result = result.append(df_int)
 
         #renumera a primera coluna
-
+        result = result.fillna(0)
+        result = result.astype({'CountryCode': int, "Confirmed": int, "Deaths": int, "Recovered": int, "Active": int})
+    
         result.to_csv(f'Python/backup_csv/bycontry.csv')
         #print(result)
         return result

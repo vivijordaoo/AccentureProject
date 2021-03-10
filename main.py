@@ -17,7 +17,7 @@ def baixaArquivoAPI():
     global df_by_country
     df_by_country = API.By_Country().retorna_dataframe()
 
-    print(df_country.shape)
+    #print(df_by_country)
 
 def carregaDFTabela():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")

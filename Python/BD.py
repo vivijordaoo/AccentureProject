@@ -3,10 +3,10 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  __server = 'jacobiano.database.windows.net'
+  __server = 'localhost'
   __database = 'Datazilla'
-  __username = 'tiago'
-  __password = '251x2mdlltfd@'   
+  __username = 'sa'
+  __password = '251x2mdlltfd'   
   __port= '1433'
   __driver= '{SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
@@ -33,8 +33,8 @@ class BD(object):
       self.conectorBD.execute("""create table PAIS
                             (
                               id			int 		not null identity(1,1),
-                              nome			varchar(50)     not null,
-                              slug			varchar(50)     null,
+                              nome			varchar(100)     not null,
+                              slug			varchar(100)     null,
                               sigla           	varchar(2)      null,
                               CONSTRAINT 		pk_pais 	primary key (id)
                             );""")
@@ -88,7 +88,7 @@ class BD(object):
         temp.append(row[valor])
       val.append(temp)
 
-    print(val)
+    #print(val)
 
     with self.conectorBD.cursor() as cursor:
       #poderia ser executemany, mas por causa da namibia derruba tudo
@@ -97,8 +97,8 @@ class BD(object):
           cursor.execute(sql, item)
         except Exception as error:
           self.armazena_erros(', '.join(str(x) for x in item), error)
-          print(f"{datetime.now().strftime('%H:%M:%S')}: "
-              f"Inserção com erro {error}!\n")
+          #print(f"{datetime.now().strftime('%H:%M:%S')}: "
+          #    f"Inserção com erro {error}!\n")
       
       self.conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
@@ -117,9 +117,15 @@ class BD(object):
     with self.conectorBD.cursor() as cursor:
       cursor.execute("SELECT DISTINCT id, nome FROM PAIS;")
       for row in cursor.fetchall():
-        df_by_country[df_by_country['Country'].str.lower() == row.nome.lower()]['CountryCode'] = row.id
+        #print(row[0], row[1].lower())
+        df_by_country.loc[df_by_country['Country'].str.lower() == row[1].lower(), 'CountryCode'] = row[0]
+      #!!!!!  
+      #Remove as linhas sem ID (que não encontrou pais)
+      df_by_country = df_by_country[df_by_country["CountryCode"] != 0]
+      #print(df_by_country)
+      
       self.inserir(sql, campos, df_by_country)
-
+      
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
                       f"Registro que originou o problema: {item}."
