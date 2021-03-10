@@ -104,6 +104,11 @@ class BD(object):
     self.inserir(sql, campos, df_country)
 
   def armazena_dados_paises(self, conectorAPI):
+    #seleciona todos os paises e salva numa lista
+    #processa o dataframe e troca nome de pais pelo id do pais da lista acima
+    #monta o dicionario de campos para a tabela de dados_paises
+    #monta o insert de dados_paises
+    # chama o inserir
     for item in conectorAPI:
       try:
         self.conectorBD.execute("INSERT INTO CASOS_CONFIRMADOS VALUES (?, ?, ?)")
