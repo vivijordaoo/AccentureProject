@@ -3,10 +3,10 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  __server = 'localhost'
+  __server = 'jacobiano.database.windows.net'
   __database = 'Datazilla'
-  __username = 'sa'
-  __password = '251x2mdlltfd'   
+  __username = 'tiago'
+  __password = '251x2mdlltfd@'   
   __port= '1433'
   __driver= '{SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
@@ -73,6 +73,7 @@ class BD(object):
     try:
       self.conectorBD.execute(f"DELETE FROM PAIS;")
       self.conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
+      self.conectorBD.execute(f"DELETE FROM LOG;")
       self.conectorBD.commit()
     except Exception as error:
       self.armazena_erros("LIMPAR TABELAS", error)
@@ -91,10 +92,16 @@ class BD(object):
     #print(val)
 
     with self.conectorBD.cursor() as cursor:
+      cont = 0
       #poderia ser executemany, mas por causa da namibia derruba tudo
       for item in val:
         try:
           cursor.execute(sql, item)
+          cont = cont + 1
+          if cont > 20:
+            self.conectorBD.commit()
+            cont = 0
+                  
         except Exception as error:
           self.armazena_erros(', '.join(str(x) for x in item), error)
           #print(f"{datetime.now().strftime('%H:%M:%S')}: "
