@@ -102,6 +102,24 @@ class BD(object):
     except Exception as error:
       self.armazena_erros(f"{datetime.now().strftime('%H:%M:%S')}: ", "LIMPAR TABELAS", error)
 
+  def limpar_tabelas_DADOSPAISES(self):
+    try:
+      self.conectorBD.execute(f"DELETE FROM DADOS_PAISES;")
+    except Exception as error:
+      self.armazena_erros(f"{datetime.now().strftime('%H:%M:%S')}: ", "LIMPAR TABELAS_DADOSPAISES", error)
+
+  def limpar_tabelas_SUMARY_PAISES(self):
+    try:
+      self.conectorBD.execute(f"DELETE FROM SUMARY_PAISES;")
+    except Exception as error:
+      self.armazena_erros(f"{datetime.now().strftime('%H:%M:%S')}: ", "LIMPAR TABELAS_SUMARY_PAISES", error)
+
+  def limpar_tabelas_LOG(self):
+    try:
+      self.conectorBD.execute(f"DELETE FROM LOG;")
+    except Exception as error:
+      self.armazena_erros(f"{datetime.now().strftime('%H:%M:%S')}: ", "LIMPAR TABELAS_LOG", error)
+
 
   def inserir(self, sql : str, campos : dict, df):
     val = []

@@ -73,18 +73,22 @@ class Summary(object):
     __campos = {'Country': 'Country', 'CountryCode': 'CountryCode', 'NewConfirmed': 'NewConfirmed', 'TotalConfirmed': 'TotalConfirmed', 'NewDeaths': 'NewDeaths', 'TotalDeaths': 'TotalDeaths', 'NewRecovered': 'NewRecovered', 'TotalRecovered': 'TotalRecovered', 'Date' : 'Date'}
     __myRetrive = RetriveAPI(__url,  __campos, 'Countries')
 
-    def retorna_dataframe(self):
+    def retorna_dataframe(self, doCache : bool = False):
         name = r'Python/backup_csv/summary.csv'
-        try:
-            df = self.__myRetrive.retorna_dataframe()
-            df.to_csv(name)
-        except Exception as error:
-            print(f"{datetime.now().strftime('%H:%M:%S')}: "
-                f"Cerregando do Buffer {error}!\n")
-            if os.path.isfile(name):
-                df = pd.read_csv(name)    
-            else:
-                df = pd.DataFrame()
+        if doCache:
+            df = pd.read_csv(name)
+            df = df.fillna(0)
+        else:  
+            try:
+                df = self.__myRetrive.retorna_dataframe()
+                df.to_csv(name)
+            except Exception as error:
+                print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                    f"Cerregando do Buffer {error}!\n")
+                if os.path.isfile(name):
+                    df = pd.read_csv(name)    
+                else:
+                    df = pd.DataFrame()
 
         try:
             df = df.astype({'CountryCode': str, 'NewConfirmed': int, 'TotalConfirmed': int, 'NewDeaths': int, 'TotalDeaths': int, 'NewRecovered': int, 'TotalRecovered': int})
@@ -98,18 +102,23 @@ class Country(object):
     __campos = {'Country': 'Country', 'Slug': 'Slug', 'ISO2': 'ISO2'}
     __myRetrive = RetriveAPI(__url,  __campos)
 
-    def retorna_dataframe(self):
+    def retorna_dataframe(self, doCache : bool = False):
         name = r'Python/backup_csv/country.csv'
-        try:
-            df = self.__myRetrive.retorna_dataframe()
-            df.to_csv(name)
-        except Exception as error:
-            print(f"{datetime.now().strftime('%H:%M:%S')}: "
-                f"Cerregando do Buffer {error}!\n")
-            if os.path.isfile(name):
-                df = pd.read_csv(name)    
-            else:
-                df = pd.DataFrame()
+        if doCache:
+            df = pd.read_csv(name)
+            df = df.fillna(0)
+        else:  
+            try:
+                df = self.__myRetrive.retorna_dataframe()
+                df.to_csv(name)
+            except Exception as error:
+                print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                    f"Cerregando do Buffer {error}!\n")
+                if os.path.isfile(name):
+                    df = pd.read_csv(name)    
+                else:
+                    df = pd.DataFrame()
+        
         try:
             df = df.astype({'Country': str, 'Slug': str, 'ISO2': str})
         except Exception as error:
@@ -131,11 +140,10 @@ class By_Country(object):
     class_country = Country()
     __campos = {"Country" : "Country", "CountryCode": "CountryCode", "Province": "Province", "City": "City", "CityCode": "CityCode", "Lat": "Lat", "Lon": "Lon", "Confirmed": "Confirmed", "Deaths": "Deaths", "Recovered": "Recovered", "Active": "Active", "Date": "Date"}
     
-    def retorna_dataframe(self):
+    def retorna_dataframe(self, doCache : bool = False):
         df = self.class_country.retorna_dataframe()
         #print(df)
         result = pd.DataFrame()
-        doCache = True
 
         for pais in df['Slug']:
             df_int = pd.DataFrame()
