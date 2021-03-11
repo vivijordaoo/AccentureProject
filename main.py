@@ -38,6 +38,11 @@ def limpaTabela():
     conectorBD = conn_BD.BD()
     conectorBD.limpar_tabelas()
 
+def executaConsultas():
+    conectorBD = conn_BD.BD()
+    df = conectorBD.consulta1()    
+    print(df)
+
 def recebeOpcaoUsuario():
     opcao = "0"
 
@@ -83,7 +88,7 @@ if __name__ == '__main__':
         
         elif opcao == "7": #7 - Exibir consulta na Tela
             print("Opção 7 - Exibir consulta na Tela")
-            pass
+            executaConsultas()
 
         else: #sair do programa
             print("Você saiu do programa. Obrigado por usar...\n")

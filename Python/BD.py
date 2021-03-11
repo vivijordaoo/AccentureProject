@@ -3,6 +3,7 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
+  """
   __server = 'datazilla.database.windows.net'
   __database = 'datazilla'
   __username = 'datazilla'
@@ -12,7 +13,6 @@ class BD(object):
   __database = 'Datazilla'
   __username = 'sa'
   __password = '251x2mdlltfd'   
-  """
     
   __port= '1433'
   __driver= '{SQL Server}'
@@ -184,3 +184,17 @@ class BD(object):
                       f" Informações Técnicas: {str(erro)}")
     self.conectorBD.commit()
     pass
+
+  def execSelect(self, sql : str):
+    insertObject = []
+    with self.conectorBD.cursor() as cursor:
+      cursor.execute(sql)
+      columnNames = [column[0] for column in cursor.description]       
+      for record in cursor.fetchall():
+          insertObject.append( dict( zip( columnNames , record ) ) )
+
+    return insertObject   
+  
+  def consulta1(self):
+    res = self.execSelect("SELECT DISTINCT * FROM PAIS;")
+    return pd.DataFrame(res)
