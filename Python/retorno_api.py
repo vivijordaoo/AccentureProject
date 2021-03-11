@@ -23,10 +23,10 @@ class RetriveAPI(object):
         self.__url = url
 
     def retorna_dataframe(self):
+        df = pd.DataFrame()
         try:
             response = requests.request("GET", self.__url, headers=self.__headers, data =self.__payload)
             raw_json = response.json()
-            df = pd.DataFrame()
     
             #print(raw_json)
             tjson = {}
@@ -60,7 +60,7 @@ class RetriveAPI(object):
             for key in self.__campos.keys():    
                 df[key] = pd.Series(val[key])
 
-            df = df.fillna('')
+            df = df.fillna(0)
         except Exception as error:
             print(f"{datetime.now().strftime('%H:%M:%S')}: "
                 f"Cerregando do Buffer {error}!\n")
@@ -135,20 +135,21 @@ class By_Country(object):
                 #print(__url)             
                 __myRetrive = RetriveAPI(__url,  self.__campos)
                 df_int = __myRetrive.retorna_dataframe()
-                if not bool(df_int ):
-                    #print(df_int)
+                if not df_int.empty:
                     df_int.to_csv(name)
-                    
+                else:
+                    df_int = pd.read_csv(name)
+
             except Exception as error:
                 print(f"{datetime.now().strftime('%H:%M:%S')}: "
                     f"Cerregando do Buffer {error}!\n")
                 if os.path.isfile(name):
                     df_int = pd.read_csv(name)    
-                    #print(df_int)
+            #print(df_int)
             result = result.append(df_int)
+            #print(result)
  
         #renumera a primera coluna
-        result = result.fillna(0)
         result = result.astype({'CountryCode': int, "Confirmed": int, "Deaths": int, "Recovered": int, "Active": int})
     
         result.to_csv(f'Python/backup_csv/bycontry.csv')
