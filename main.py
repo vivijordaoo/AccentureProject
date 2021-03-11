@@ -40,8 +40,20 @@ def limpaTabela():
 
 def executaConsultas():
     conectorBD = conn_BD.BD()
-    df = conectorBD.consulta1()    
-    print(df)
+    df1 = conectorBD.consultaPanoramaCasosConfirmadosTop10()
+    print("\n\nPanorama diário de quantidade de casos confirmados de COVID-19 dos 10 países do mundo com maiores números.")
+    print(df1)
+    df2 = conectorBD.consultaPanoramaQtdeMortesTop10()
+    print("\n\nPanorama diário de quantidade de mortes de COVID-19 dos 10 países do mundo com números.")
+    print(df2)
+    df3 = conectorBD.consultaTotalMortesTop10()
+    print("\n\nTotal de mortes por COVID-19 dos 10 países do mundo com maiores números.")
+    print(df3)
+    df4 = conectorBD.consultaTotalCasosConfirmadosTop10()
+    print("\n\nTotal de casos confirmados por COVID-19 dos 10 países do mundo com maiores números")
+    print(df4)
+    print("\n\n")
+
 
 def recebeOpcaoUsuario():
     opcao = "0"

@@ -90,7 +90,7 @@ class BD(object):
       self.conectorBD.commit()
     except Exception as error:
       #self.armazena_erros("CRIAR TABELAS", error)
-      print(f"Except ao criar tabela {error}")
+      print(f"{datetime.now().strftime('%H:%M:%S')}: ", f"Except ao criar tabela {error}")
   
   def limpar_tabelas(self):
     try:
@@ -100,7 +100,7 @@ class BD(object):
       self.conectorBD.execute(f"DELETE FROM LOG;")
       self.conectorBD.commit()
     except Exception as error:
-      self.armazena_erros("LIMPAR TABELAS", error)
+      self.armazena_erros(f"{datetime.now().strftime('%H:%M:%S')}: ", "LIMPAR TABELAS", error)
 
 
   def inserir(self, sql : str, campos : dict, df):
@@ -187,14 +187,45 @@ class BD(object):
 
   def execSelect(self, sql : str):
     insertObject = []
-    with self.conectorBD.cursor() as cursor:
-      cursor.execute(sql)
-      columnNames = [column[0] for column in cursor.description]       
-      for record in cursor.fetchall():
-          insertObject.append( dict( zip( columnNames , record ) ) )
-
+    try:
+      with self.conectorBD.cursor() as cursor:
+        cursor.execute(sql)
+        columnNames = [column[0] for column in cursor.description]       
+        for record in cursor.fetchall():
+            insertObject.append( dict( zip( columnNames , record ) ) )
+    except Exception as erro:
+      print(f"{datetime.now().strftime('%H:%M:%S')}: "
+            f"Erro na consulta {sql} {erro} !\n")
     return insertObject   
   
-  def consulta1(self):
-    res = self.execSelect("SELECT DISTINCT * FROM PAIS;")
+  def consultaPanoramaCasosConfirmadosTop10(self):
+    res = self.execSelect(f"""SELECT TOP 10 PAIS.NOME, SUMARY_PAISES.NEWCONFIRMED
+                              FROM PAIS
+                              INNER JOIN SUMARY_PAISES
+                              ON PAIS.ID = SUMARY_PAISES.ID_PAIS
+                              ORDER BY SUMARY_PAISES.NEWCONFIRMED DESC""")
     return pd.DataFrame(res)
+
+  def consultaPanoramaQtdeMortesTop10(self):
+    res = self.execSelect(f"""SELECT TOP 10 PAIS.NOME, SUMARY_PAISES.NEWDEATHS
+                              FROM PAIS
+                              INNER JOIN SUMARY_PAISES
+                              ON PAIS.ID = SUMARY_PAISES.ID_PAIS
+                              ORDER BY SUMARY_PAISES.NEWDEATHS DESC""")
+    return pd.DataFrame(res)    
+
+  def consultaTotalMortesTop10(self):
+    res = self.execSelect(f"""SELECT TOP 10 PAIS.NOME, SUMARY_PAISES.TOTALDEATHS
+                              FROM PAIS
+                              INNER JOIN SUMARY_PAISES
+                              ON PAIS.ID = SUMARY_PAISES.ID_PAIS
+                              ORDER BY SUMARY_PAISES.TOTALDEATHS DESC""")
+    return pd.DataFrame(res)        
+
+  def consultaTotalCasosConfirmadosTop10(self):
+    res = self.execSelect(f"""SELECT TOP 10 PAIS.NOME, SUMARY_PAISES.TOTALCONFIRMED
+                              FROM PAIS
+                              INNER JOIN SUMARY_PAISES
+                              ON PAIS.ID = SUMARY_PAISES.ID_PAIS
+                              ORDER BY SUMARY_PAISES.TOTALCONFIRMED DESC""")
+    return pd.DataFrame(res)            
