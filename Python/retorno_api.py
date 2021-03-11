@@ -58,12 +58,12 @@ class RetriveAPI(object):
 
 
             for key in self.__campos.keys():    
-                df[key] = pd.Series(val[key])
+                df[key] = pd.Series(val[key], dtype='object')
 
             df = df.fillna(0)
         except Exception as error:
             print(f"{datetime.now().strftime('%H:%M:%S')}: "
-                f"Cerregando do Buffer {error}!\n")
+                f"Falha ao obter da API {error}!\n")
             raise Exception(error)
             
         return df
