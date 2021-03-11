@@ -86,6 +86,11 @@ class Summary(object):
             else:
                 df = pd.DataFrame()
 
+        try:
+            df = df.astype({'CountryCode': str, 'NewConfirmed': int, 'TotalConfirmed': int, 'NewDeaths': int, 'TotalDeaths': int, 'NewRecovered': int, 'TotalRecovered': int})
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Erro ao aplicar o Schema, dados inconsistentes {error}!\n")
         return df
 
 class Country(object):
@@ -105,8 +110,12 @@ class Country(object):
                 df = pd.read_csv(name)    
             else:
                 df = pd.DataFrame()
-        #!!!!
-        #colocar o schema    
+        try:
+            df = df.astype({'Country': str, 'Slug': str, 'ISO2': str})
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Erro ao aplicar o Schema, dados inconsistentes {error}!\n")
+        
         return df
     
 class All_Data(object):
@@ -126,32 +135,42 @@ class By_Country(object):
         df = self.class_country.retorna_dataframe()
         #print(df)
         result = pd.DataFrame()
+        doCache = True
 
         for pais in df['Slug']:
             df_int = pd.DataFrame()
             name = f'Python/backup_csv/{pais}.csv'
-            try:
-                __url = f"https://api.covid19api.com/total/country/{pais}"
-                #print(__url)             
-                __myRetrive = RetriveAPI(__url,  self.__campos)
-                df_int = __myRetrive.retorna_dataframe()
-                if not df_int.empty:
-                    df_int.to_csv(name)
-                else:
-                    df_int = pd.read_csv(name)
+            if doCache:
+                df_int = pd.read_csv(name)
+                df_int = df_int.fillna(0)
+                result = result.append(df_int)
+            else:    
+                try:
+                    __url = f"https://api.covid19api.com/total/country/{pais}"
+                    #print(__url)             
+                    __myRetrive = RetriveAPI(__url,  self.__campos)
+                    df_int = __myRetrive.retorna_dataframe()
+                    if not df_int.empty:
+                        df_int.to_csv(name)
+                    else:
+                        df_int = pd.read_csv(name)
+                    result = result.append(df_int)
 
-            except Exception as error:
-                print(f"{datetime.now().strftime('%H:%M:%S')}: "
-                    f"Cerregando do Buffer {error}!\n")
-                if os.path.isfile(name):
-                    df_int = pd.read_csv(name)    
-            #print(df_int)
-            result = result.append(df_int)
-            #print(result)
- 
+                except Exception as error:
+                    print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                        f"Cerregando do Buffer {error}!\n")
+                    if os.path.isfile(name):
+                        df_int = pd.read_csv(name)    
+                #print(df_int)
+            
+        #print(result)
         #renumera a primera coluna
-        result = result.astype({'CountryCode': int, "Confirmed": int, "Deaths": int, "Recovered": int, "Active": int})
-    
+        try:
+            result = result.astype({'CountryCode': int, "Confirmed": int, "Deaths": int, "Recovered": int, "Active": int})
+        except Exception as error:
+            print(f"{datetime.now().strftime('%H:%M:%S')}: "
+                f"Erro ao aplicar o Schema, dados inconsistentes {error}!\n")
+  
         result.to_csv(f'Python/backup_csv/bycontry.csv')
         #print(result)
         return result
@@ -174,10 +193,12 @@ if __name__ == '__main__':
     sumary = Summary()
     df = sumary.retorna_dataframe()
     print(df)
+    print(df.keys())    
 
     country = Country()
     df = country.retorna_dataframe()
     print(df)    
+    print(df.keys())    
     
     bycountry = By_Country()
     df = bycountry.retorna_dataframe()

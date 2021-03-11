@@ -7,6 +7,13 @@ class BD(object):
   __database = 'datazilla'
   __username = 'datazilla'
   __password = 'gama123456@#$'   
+  """
+  __server = 'localhost'
+  __database = 'Datazilla'
+  __username = 'sa'
+  __password = '251x2mdlltfd'   
+  """
+    
   __port= '1433'
   __driver= '{SQL Server}'
   __connString = 'DRIVER='+__driver+';SERVER='+__server+';PORT='+__port+';DATABASE='+__database+';UID='+__username+';PWD='+ __password
@@ -30,55 +37,55 @@ class BD(object):
 
   def criar_tabelas(self):
     try:
-      self.conectorBD.execute("""create table PAIS
-                            (
-                              id			int 		not null identity(1,1),
-                              nome			varchar(100)     not null,
-                              slug			varchar(100)     null,
-                              sigla           	varchar(2)      null,
-                              CONSTRAINT 		pk_pais 	primary key (id)
-                            );""")
+      self.conectorBD.execute("""CREATE TABLE PAIS
+                                  (
+                                    ID 				INT				NOT NULL IDENTITY(1, 1),  	--PK
+                                    NOME			VARCHAR(100)     NOT NULL,
+                                    SLUG			VARCHAR(100)     NULL,
+                                    SIGLA           	VARCHAR(2)      NULL,
+                                    CONSTRAINT 		PK_PAIS 	PRIMARY KEY (ID)
+                                  );""")
         
-      self.conectorBD.execute("""create table DADOS_PAISES
-                            (
-                              id			int 			not null identity(1,1),
-                              id_pais			int			not null,
-                              lat			decimal			not null,
-                              lon			decimal 		not null,
-                              confirmed		int			null,
-                              deaths			int			null,
-                              recovered		int			null,
-                              active			int			null,
-                              date			date		not null,
-                              
-                              constraint 		pk_id			primary key (id),
-                              constraint fk_dados_paises_pais 		foreign key (id_pais)
-                                references pais(id)
-                            );""")
+      self.conectorBD.execute("""CREATE TABLE DADOS_PAISES
+                                  (
+                                    ID 				INT				NOT NULL IDENTITY(1, 1),  --PK
+                                    ID_PAIS			INT			NOT NULL,	 	 --FK PAIS
+                                    LAT			DECIMAL			NOT NULL,
+                                    LON			DECIMAL 		NOT NULL,
+                                    CONFIRMED		INT			NULL,
+                                    DEATHS			INT			NULL,
+                                    RECOVERED		INT			NULL,
+                                    ACTIVE			INT			NULL,
+                                    DATE			DATETIME		NOT NULL,
+                                    
+                                    CONSTRAINT 		PK_ID			PRIMARY KEY (ID),
+                                    CONSTRAINT FK_DADOS_PAISES_PAIS 		FOREIGN KEY (ID_PAIS)
+                                      REFERENCES PAIS(ID)
+                                  );""")
 
-      self.conectorBD.execute("""create table sumary_paises
-                            (
-	                            ID 					INT			NOT NULL IDENTITY(1, 1),  --pk
-	                            id_pais				int			not null,	 	 --fk pais
-	                            NewConfirmed		int			null,
-	                            TotalConfirmed		int			null,
-	                            NewDeaths			int			null,
-	                            TotalDeaths			int			null,
-	                            NewRecovered		int			null,
-	                            TotalRecovered		int			null,
-	                            date			datetime		not null,
-	                            constraint 		pk_sumary		primary key (id),
-	                            constraint fk_sumary_pais 		foreign key (id_pais)
-		                            references pais(id)
-                          );""")
+      self.conectorBD.execute("""CREATE TABLE SUMARY_PAISES
+                                  (
+                                    ID 					INT			NOT NULL IDENTITY(1, 1),  --PK
+                                    ID_PAIS				INT			NOT NULL,	 	 --FK PAIS
+                                    NEWCONFIRMED		INT			NULL,
+                                    TOTALCONFIRMED		INT			NULL,
+                                    NEWDEATHS			INT			NULL,
+                                    TOTALDEATHS			INT			NULL,
+                                    NEWRECOVERED		INT		NULL,
+                                    TOTALRECOVERED		INT			NULL,
+                                    DATE			DATETIME		NOT NULL,
+                                    CONSTRAINT 		PK_SUMARY		PRIMARY KEY (ID),
+                                    CONSTRAINT FK_SUMARY_PAIS 		FOREIGN KEY (ID_PAIS)
+                                      REFERENCES PAIS(ID)
+                                  );""")
 
-      self.conectorBD.execute("""create table log 
-                            (
-	                            id		int		not null identity(1,1),
-	                            data		datetime	not null,
-	                            descricao	text		not null,
-	                            constraint 	pk_log		primary key (id)
-                            );""")
+      self.conectorBD.execute("""CREATE TABLE LOG 
+                                  (
+                                    ID 				INT				NOT NULL IDENTITY(1, 1), --PK
+                                    DATE		DATETIME	NOT NULL,
+                                    DESCRICAO	TEXT		NOT NULL,
+                                    CONSTRAINT 	PK_LOG		PRIMARY KEY (ID)
+                                  );""")
 
       self.conectorBD.commit()
     except Exception as error:
@@ -121,8 +128,8 @@ class BD(object):
                   
         except Exception as error:
           self.armazena_erros(', '.join(str(x) for x in item), error)
-          #print(f"{datetime.now().strftime('%H:%M:%S')}: "
-          #    f"Inserção com erro {error}!\n")
+          print(f"{datetime.now().strftime('%H:%M:%S')}: "
+              f"Inserção com erro {', '.join(str(x) for x in item)} - {error}!\n")
       
       self.conectorBD.commit()
     print(f"{datetime.now().strftime('%H:%M:%S')}: "
@@ -150,7 +157,27 @@ class BD(object):
       #print(df_by_country)
       
       self.inserir(sql, campos, df_by_country)
+
+  def armazena_sumary_paises(self, df_sumary):
+    campos = {'ID_PAIS':'ID_PAIS', 'NEWCONFIRMED':'NewConfirmed', 'TOTALCONFIRMED':'TotalConfirmed', 'NEWDEATHS':'NewDeaths', 'TOTALDEATHS':'TotalDeaths', 'NEWRECOVERED':'NewRecovered', 'TOTALRECOVERED':'TotalRecovered', 'DATE':'Date'}
+    sql = f"INSERT INTO SUMARY_PAISES (ID_PAIS, NEWCONFIRMED, TOTALCONFIRMED, NEWDEATHS, TOTALDEATHS, NEWRECOVERED, TOTALRECOVERED, DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+    with self.conectorBD.cursor() as cursor:
+      cursor.execute("SELECT DISTINCT id, NOME FROM PAIS;")
+      for row in cursor.fetchall():
+        #print(row[1].lower())
+        df_sumary.loc[df_sumary['Country'].str.lower() == row[1].lower(), 'ID_PAIS'] = row[0]
+      #!!!!!  
+      # Grava as linhas q não encontrou pais no log
+      #Remove as linhas sem ID (que não encontrou pais)
+      print(df_sumary)
+      df_sumary = df_sumary.fillna(0)
+      df_sumary = df_sumary.astype({'ID_PAIS': int})
+      print(df_sumary)
+      df_sumary = df_sumary[df_sumary["ID_PAIS"] != 0]
+      print(df_sumary)
       
+      self.inserir(sql, campos, df_sumary)
+
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
                       f"Registro que originou o problema: {item}."

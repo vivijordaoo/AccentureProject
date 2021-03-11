@@ -11,6 +11,7 @@ df_by_country = pd.DataFrame()
 
 def baixaArquivoAPI():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe")
+    global df_sumary
     df_sumary = API.Summary().retorna_dataframe()
     global df_country
     df_country = API.Country().retorna_dataframe()
@@ -22,8 +23,9 @@ def baixaArquivoAPI():
 def carregaDFTabela():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")
     conectorBD = conn_BD.BD()
-    conectorBD.armazena_paises(df_country)
-    conectorBD.armazena_dados_paises(df_by_country)
+    #conectorBD.armazena_paises(df_country)
+    conectorBD.armazena_sumary_paises(df_sumary)
+    #conectorBD.armazena_dados_paises(df_by_country)
     #print(conectorBD)
 
 def criaTabela():
