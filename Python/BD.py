@@ -3,7 +3,6 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  """
   __server = 'datazilla.database.windows.net'
   __database = 'datazilla'
   __username = 'datazilla'
@@ -13,6 +12,7 @@ class BD(object):
   __database = 'Datazilla'
   __username = 'sa'
   __password = '251x2mdlltfd'   
+  """
     
   __port= '1433'
   __driver= '{SQL Server}'
@@ -187,12 +187,12 @@ class BD(object):
       #!!!!!  
       # Grava as linhas q não encontrou pais no log
       #Remove as linhas sem ID (que não encontrou pais)
-      print(df_sumary)
+      #print(df_sumary)
       df_sumary = df_sumary.fillna(0)
       df_sumary = df_sumary.astype({'ID_PAIS': int})
-      print(df_sumary)
+      #print(df_sumary)
       df_sumary = df_sumary[df_sumary["ID_PAIS"] != 0]
-      print(df_sumary)
+      #print(df_sumary)
       
       self.inserir(sql, campos, df_sumary)
 

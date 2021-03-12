@@ -50,7 +50,7 @@ def carregaAPIBYCOUNTRY_TabelaDadosPaies():
 
 def carregaAPISUMARY_TabelaSumaryPaises():
     print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Sumary_PAISES da API para TABELA (PAIS já deve estar POPULADO)")
-    df_sumary = baixaSUMARYAPI(false)
+    df_sumary = baixaSUMARYAPI(False)
     carregaSUMARYTabela(df_sumary)
     print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
@@ -67,7 +67,7 @@ def carregaSUMARYTabela(df_sumary):
     print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
 def carregaDADOSPAISESTabela(df_by_country):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no SUMARY_PAISES")
+    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no DADOS_PAISES")
     conectorBD = conn_BD.BD()
     conectorBD.armazena_dados_paises(df_by_country)
     print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
