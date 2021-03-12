@@ -5,6 +5,7 @@ import pandas as pd
 class ProcessaDF(object):
 
     def processaDFPais(self, df_country):
+        # tira os paises que já existem
         return df_country
 
     def processaDFDadosPais(self, df_by_country):
@@ -15,6 +16,7 @@ class ProcessaDF(object):
         #!!!!!  
         # Grava as linhas q não encontrou pais no log
         #Remove as linhas sem ID (que não encontrou pais)
+        #Remove datas que já existem
         df_by_country = df_by_country[df_by_country["CountryCode"] != 0]
         #print(df_by_country)
         return df_by_country    
@@ -27,6 +29,7 @@ class ProcessaDF(object):
         #!!!!!  
         # Grava as linhas q não encontrou pais no log
         #Remove as linhas sem ID (que não encontrou pais)
+        #remove datas que já existem
         #print(df_sumary)
         df_sumary = df_sumary.fillna(0)
         df_sumary = df_sumary.astype({'ID_PAIS': int})
