@@ -3,6 +3,7 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
+  """
   __server = 'datazilla.database.windows.net'
   __database = 'datazilla'
   __username = 'datazilla'
@@ -12,7 +13,6 @@ class BD(object):
   __database = 'Datazilla'
   __username = 'sa'
   __password = '251x2mdlltfd'   
-  """
     
   __port= '1433'
   __driver= '{SQL Server}'
@@ -163,38 +163,12 @@ class BD(object):
     campos = {'ID_PAIS':'CountryCode', 'LAT':'Lat', 'LON':'Lon', 'CONFIRMED':'Confirmed', 'DEATHS':'Deaths', 'RECOVERED':'Recovered',
     'ACTIVE':'Active', 'DATE':'Date'}
     sql = f"INSERT INTO DADOS_PAISES (ID_PAIS, LAT, LON, CONFIRMED, DEATHS, RECOVERED, ACTIVE, DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-    with self.conectorBD.cursor() as cursor:
-      cursor.execute("SELECT DISTINCT id, nome FROM PAIS;")
-      for row in cursor.fetchall():
-        #print(row[0], row[1].lower())
-        df_by_country.loc[df_by_country['Country'].str.lower() == row[1].lower(), 'CountryCode'] = row[0]
-      #!!!!!  
-      # Grava as linhas q não encontrou pais no log
-      #Remove as linhas sem ID (que não encontrou pais)
-      df_by_country = df_by_country[df_by_country["CountryCode"] != 0]
-      #print(df_by_country)
-      
-      self.inserir(sql, campos, df_by_country)
+    self.inserir(sql, campos, df_by_country)
 
   def armazena_sumary_paises(self, df_sumary):
     campos = {'ID_PAIS':'ID_PAIS', 'NEWCONFIRMED':'NewConfirmed', 'TOTALCONFIRMED':'TotalConfirmed', 'NEWDEATHS':'NewDeaths', 'TOTALDEATHS':'TotalDeaths', 'NEWRECOVERED':'NewRecovered', 'TOTALRECOVERED':'TotalRecovered', 'DATE':'Date'}
-    sql = f"INSERT INTO SUMARY_PAISES (ID_PAIS, NEWCONFIRMED, TOTALCONFIRMED, NEWDEATHS, TOTALDEATHS, NEWRECOVERED, TOTALRECOVERED, DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-    with self.conectorBD.cursor() as cursor:
-      cursor.execute("SELECT DISTINCT id, NOME FROM PAIS;")
-      for row in cursor.fetchall():
-        #print(row[1].lower())
-        df_sumary.loc[df_sumary['Country'].str.lower() == row[1].lower(), 'ID_PAIS'] = row[0]
-      #!!!!!  
-      # Grava as linhas q não encontrou pais no log
-      #Remove as linhas sem ID (que não encontrou pais)
-      #print(df_sumary)
-      df_sumary = df_sumary.fillna(0)
-      df_sumary = df_sumary.astype({'ID_PAIS': int})
-      #print(df_sumary)
-      df_sumary = df_sumary[df_sumary["ID_PAIS"] != 0]
-      #print(df_sumary)
-      
-      self.inserir(sql, campos, df_sumary)
+    sql = f"INSERT INTO SUMARY_PAISES (ID_PAIS, NEWCONFIRMED, TOTALCONFIRMED, NEWDEATHS, TOTALDEATHS, NEWRECOVERED, TOTALRECOVERED, DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"     
+    self.inserir(sql, campos, df_sumary)
 
   def armazena_erros(self, item, erro):
     self.conectorBD.execute("INSERT INTO LOG VALUES (GETDATE(), ?)",
@@ -246,4 +220,9 @@ class BD(object):
                               INNER JOIN SUMARY_PAISES
                               ON PAIS.ID = SUMARY_PAISES.ID_PAIS
                               ORDER BY SUMARY_PAISES.TOTALCONFIRMED DESC""")
-    return pd.DataFrame(res)            
+    return pd.DataFrame(res) 
+
+  def consultaPais(self):
+    res = self.execSelect(f"""SELECT DISTINCT id, NOME FROM PAIS;""")
+    return pd.DataFrame(res) 
+                 

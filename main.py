@@ -1,158 +1,180 @@
 from Python import retorno_api as API
 from Python import BD as conn_BD
+from Python import processa_dados as Proc
 
 import pandas as pd
 from datetime import datetime
 from datetime import date
 
-def baixaPAISAPI(doBuffer: bool = False):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando PAIS da API")
-    df_country = API.Country().retorna_dataframe(doBuffer)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
-    return df_country
+class Main(object):
+    def baixaAPIPAIS(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando PAIS da API")
+        df_country = API.Country().retorna_dataframe(doBuffer)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_country
+        
+    def baixaAPISUMARY(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando SUMARY da API")
+        df_sumary = API.Summary().retorna_dataframe(doBuffer)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_sumary
 
-def baixaSUMARYAPI(doBuffer: bool = False):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando SUMARY da API")
-    df_sumary = API.Summary().retorna_dataframe(doBuffer)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
-    return df_sumary
-
-def baixaBYCONTRYAPI(doBuffer: bool = False):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando BY_COUNTRY da API")
-    df_by_country = API.By_Country().retorna_dataframe(doBuffer)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
-    return df_by_country
+    def baixaAPIBYCONTRY(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando BY_COUNTRY da API")
+        df_by_country = API.By_Country().retorna_dataframe(doBuffer)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_by_country
 
 
-def baixaArquivoAPI(doBuffer: bool = False):
-    if doBuffer:
-        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados da API do buffer CSV")
-    else:    
-        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados da API NO CSV")
+    def baixaAPITodas(self, doBuffer: bool = False):
+        if doBuffer:
+            print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados da API do buffer CSV")
+        else:    
+            print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados da API NO CSV")
+        
+        df_sumary = self.baixaAPISUMARY(doBuffer)
+        df_country = self.baixaAPIPAIS(doBuffer)
+        df_by_country = self.baixaAPIBYCONTRY(doBuffer)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_sumary, df_country, df_by_country
     
-    df_sumary = baixaSUMARYAPI(doBuffer)
-    df_country = baixaPAISAPI(doBuffer)
-    df_by_country = baixaBYCONTRYAPI(doBuffer)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
-    return df_sumary, df_country, df_by_country
-    
-def carregaAPICOUNTRY_TabelaPAIS():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando PAIS da API para TABELA")
-    df_country = baixaPAISAPI(False)
-    carregaPAISTabela(df_country)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def processaDFPais(self, df_country):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Processando COUNTRY DF")
+        df_country = Proc.ProcessaDF().processaDFPais(df_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_country
 
-def carregaAPIBYCOUNTRY_TabelaDadosPaies():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados_PAISES da API para TABELA (PAIS já deve estar POPULADO)")
-    df_by_country = baixaBYCONTRYAPI(False)
-    carregaDADOSPAISESTabela(df_by_country)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def processaDFDadosPais(self, df_by_country):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Processando BY COUNTRY DF")
+        df_by_country = Proc.ProcessaDF().processaDFDadosPais(df_by_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_by_country
 
-def carregaAPISUMARY_TabelaSumaryPaises():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Sumary_PAISES da API para TABELA (PAIS já deve estar POPULADO)")
-    df_sumary = baixaSUMARYAPI(False)
-    carregaSUMARYTabela(df_sumary)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def processaDFSumaryPais(self, df_sumary):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Processando SUMARY DF")
+        df_sumary = Proc.ProcessaDF().processaDFSumaryPais(df_sumary)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        return df_sumary
 
-def carregaPAISTabela(df_country):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no PAIS")
-    conectorBD = conn_BD.BD()
-    conectorBD.armazena_paises(df_country)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaPAISTabela(self, df_country):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no PAIS")
+        conectorBD = conn_BD.BD()
+        conectorBD.armazena_paises(df_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def carregaSUMARYTabela(df_sumary):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no SUMARY_PAISES")
-    conectorBD = conn_BD.BD()
-    conectorBD.armazena_sumary_paises(df_sumary)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaSUMARYTabela(self, df_sumary):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no SUMARY_PAISES")
+        conectorBD = conn_BD.BD()
+        conectorBD.armazena_sumary_paises(df_sumary)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def carregaDADOSPAISESTabela(df_by_country):
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no DADOS_PAISES")
-    conectorBD = conn_BD.BD()
-    conectorBD.armazena_dados_paises(df_by_country)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaDADOSPAISESTabela(self, df_by_country):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no DADOS_PAISES")
+        conectorBD = conn_BD.BD()
+        conectorBD.armazena_dados_paises(df_by_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def carregaDFTabela(doBuffer: bool = False):
-    df_sumary, df_country, df_by_country = baixaArquivoAPI(doBuffer)  
-    print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")
-    carregaPAISTabela(df_country)
-    carregaSUMARYTabela(df_sumary)
-    carregaDADOSPAISESTabela(df_by_country)
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaAPICOUNTRY_TabelaPAIS(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando PAIS da API para TABELA")
+        df_country = self.baixaPAISAPI(doBuffer)
+        df_country = self.processaDFPais(df_country)
+        self.carregaPAISTabela(df_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def carregaDFTabeladoBuffer():
-    carregaDFTabela(True)
+    def carregaAPIBYCOUNTRY_TabelaDadosPaies(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dados_PAISES da API para TABELA (PAIS já deve estar POPULADO)")
+        df_by_country = self.baixaAPIBYCONTRY(doBuffer)
+        df_by_country = self.processaDFDadosPais(df_by_country)
+        self.carregaDADOSPAISESTabela(df_by_country)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def criaTabela():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Criando Tabelas no BD")
-    conectorBD = conn_BD.BD()
-    conectorBD.criar_tabelas()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
-    
-def limpaTabela():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas no BD")
-    conectorBD = conn_BD.BD()
-    conectorBD.limpar_tabelas()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaAPISUMARY_TabelaSumaryPaises(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Sumary_PAISES da API para TABELA (PAIS já deve estar POPULADO)")
+        df_sumary = self.baixaAPISUMARY(doBuffer)
+        df_sumary = self.processaDFSumaryPais(df_sumary)
+        self.carregaSUMARYTabela(df_sumary)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def limpaTabelaDADOSPAISES():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas DADOS_PAISES")
-    conectorBD = conn_BD.BD()
-    conectorBD.limpar_tabelas_DADOSPAISES()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaDFTabela(self, doBuffer: bool = False):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Carregando Dataframe no BD")
+        self.carregaAPICOUNTRY_TabelaPAIS(doBuffer)
+        self.carregaAPISUMARY_TabelaSumaryPaises(doBuffer)
+        self.carregaAPIBYCOUNTRY_TabelaDadosPaies(doBuffer)
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def limpaTabelaSUMARYPAISES():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas SUMARY_PAISES")
-    conectorBD = conn_BD.BD()
-    conectorBD.limpar_tabelas_SUMARY_PAISES()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def carregaDFTabeladoBuffer(self):
+        self.carregaDFTabela(True)
 
-def limpaTabelaLOG():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas LOG")
-    conectorBD = conn_BD.BD()
-    conectorBD.limpar_tabelas_LOG()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def criaTabela(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Criando Tabelas no BD")
+        conectorBD = conn_BD.BD()
+        conectorBD.criar_tabelas()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+        
+    def limpaTabela(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas no BD")
+        conectorBD = conn_BD.BD()
+        conectorBD.limpar_tabelas()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def executaConsulta1():
-    conectorBD = conn_BD.BD()
-    df1 = conectorBD.consultaPanoramaCasosConfirmadosTop10()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Panorama diário de quantidade de casos confirmados de COVID-19 dos 10 países do mundo com maiores números.")
-    print(df1)
-    print("\n\n")
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def limpaTabelaDADOSPAISES(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas DADOS_PAISES")
+        conectorBD = conn_BD.BD()
+        conectorBD.limpar_tabelas_DADOSPAISES()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def executaConsulta2():
-    conectorBD = conn_BD.BD()
-    df2 = conectorBD.consultaPanoramaQtdeMortesTop10()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Panorama diário de quantidade de mortes de COVID-19 dos 10 países do mundo com números.")
-    print(df2)
-    print("\n\n")
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def limpaTabelaSUMARYPAISES(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas SUMARY_PAISES")
+        conectorBD = conn_BD.BD()
+        conectorBD.limpar_tabelas_SUMARY_PAISES()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def executaConsulta3():
-    conectorBD = conn_BD.BD()
-    df3 = conectorBD.consultaTotalMortesTop10()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Total de mortes por COVID-19 dos 10 países do mundo com maiores números.")
-    print(df3)
-    print("\n\n")
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def limpaTabelaLOG(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Limpando Tabelas LOG")
+        conectorBD = conn_BD.BD()
+        conectorBD.limpar_tabelas_LOG()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def executaConsulta4():
-    conectorBD = conn_BD.BD()
-    df4 = conectorBD.consultaTotalCasosConfirmadosTop10()
-    print(f"{datetime.now().strftime('%H:%M:%S')} Total de casos confirmados por COVID-19 dos 10 países do mundo com maiores números.")
-    print(df4)
-    print("\n\n")
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def executaConsulta1(self):
+        conectorBD = conn_BD.BD()
+        df1 = conectorBD.consultaPanoramaCasosConfirmadosTop10()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Panorama diário de quantidade de casos confirmados de COVID-19 dos 10 países do mundo com maiores números.")
+        print(df1)
+        print("\n\n")
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
-def executaTodasConsultas():
-    print(f"{datetime.now().strftime('%H:%M:%S')} Executando todas as consultas.")
-    executaConsulta1()
-    executaConsulta2()
-    executaConsulta3()
-    executaConsulta4()
-    print("\n\n")
-    print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+    def executaConsulta2(self):
+        conectorBD = conn_BD.BD()
+        df2 = conectorBD.consultaPanoramaQtdeMortesTop10()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Panorama diário de quantidade de mortes de COVID-19 dos 10 países do mundo com números.")
+        print(df2)
+        print("\n\n")
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+
+    def executaConsulta3(self):
+        conectorBD = conn_BD.BD()
+        df3 = conectorBD.consultaTotalMortesTop10()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Total de mortes por COVID-19 dos 10 países do mundo com maiores números.")
+        print(df3)
+        print("\n\n")
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+
+    def executaConsulta4(self):
+        conectorBD = conn_BD.BD()
+        df4 = conectorBD.consultaTotalCasosConfirmadosTop10()
+        print(f"{datetime.now().strftime('%H:%M:%S')} Total de casos confirmados por COVID-19 dos 10 países do mundo com maiores números.")
+        print(df4)
+        print("\n\n")
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
+
+    def executaTodasConsultas(self):
+        print(f"{datetime.now().strftime('%H:%M:%S')} Executando todas as consultas.")
+        self.executaConsulta1()
+        self.executaConsulta2()
+        self.executaConsulta3()
+        self.executaConsulta4()
+        print("\n\n")
+        print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
 
 #--------------
 
@@ -196,71 +218,72 @@ def recebeOpcaoUsuario():
 if __name__ == '__main__':
     opcao = recebeOpcaoUsuario()
 
+    main = Main()
     while opcao >= 1 and opcao < 17:
         if opcao == 1: 
             print("Opção 1 - Exibi TODAS as consultas na Tela\n") 
-            executaTodasConsultas()                       
+            main.executaTodasConsultas()                       
 
         elif opcao == 2: 
             print("Opção 2 - Exibi Panorama diário de quantidade de casos confirmados de COVID-19 dos 10 países do mundo com maiores números\n") 
-            executaConsulta1()                       
+            main.executaConsulta1()                       
 
         elif opcao == 3: 
             print("Opção 3 - Panorama diário de quantidade de mortes de COVID-19 dos 10 países do mundo com números\n") 
-            executaConsulta2()                       
+            main.executaConsulta2()                       
 
         elif opcao == 4: 
             print("Opção 4 - Total de mortes por COVID-19 dos 10 países do mundo com maiores números\n") 
-            executaConsulta3()                       
+            main.executaConsulta3()                       
 
         elif opcao == 5: 
             print("Opção 5 - Total de casos confirmados por COVID-19 dos 10 países do mundo com maiores números\n") 
-            executaConsulta4()                       
+            main.executaConsulta4()                       
 #---------
         elif opcao == 6: 
             print("Opção 6 - Baixar Arquivo Coronavirus COVID19 da API")
-            baixaArquivoAPI()
+            main.baixaAPITodas()
 
         elif opcao == 7: 
             print("Opção 7 - Carregar Todos os Dados da API nas Tabelas")
-            carregaDFTabela()
+            main.carregaDFTabela()
 
         elif opcao == 8: 
             print("Opção 8 - Carregar Todos os Dados do BUFFER nas Tabelas")
-            carregaDFTabeladoBuffer()
+            main.carregaDFTabeladoBuffer()
 
         elif opcao == 9: 
             print("Opção 9 - Carregar PAIS na Tabela")
-            carregaAPICOUNTRY_TabelaPAIS()
+            main.carregaAPICOUNTRY_TabelaPAIS()
 
         elif opcao == 10: 
-            print("Opção 10 - Carregar Dados de PAISES na Tabela")
-            carregaAPIBYCOUNTRY_TabelaDadosPaies()
+            print("Opção 10 - Carregar Dados de PAISES na Tabela (BUFFER)")
+            main.carregaAPIBYCOUNTRY_TabelaDadosPaies(True)
 
         elif opcao == 11: 
             print("Opção 11 - Carregar Sumario de PAISES na Tabela")
-            carregaAPISUMARY_TabelaSumaryPaises()
+            main.carregaAPISUMARY_TabelaSumaryPaises()
 #---------
 
         elif opcao == 12: 
             print("Opção 12 - Cria estrutura de tabelas no DB Selecionado")
-            criaTabela()
+            main.criaTabela()
 
         elif opcao == 13: 
             print("Opção 13 - Limpar conteúdo das Tabelas")
-            limpaTabela()
+            main.limpaTabela()
 
         elif opcao == 14: 
             print("Opção 14 - Limpar conteúdo DADOS_PAISES")
-            limpaTabelaDADOSPAISES()
+            main.limpaTabelaDADOSPAISES()
 
         elif opcao == 15: 
             print("Opção 15 - Limpar conteúdo SUMARY_PAISES")
-            limpaTabelaSUMARYPAISES()
+            main.limpaTabelaSUMARYPAISES()
 
         elif opcao == 16: 
             print("Opção 16 - Limpar conteúdo LOG")
-            limpaTabelaLOG()
+            main.limpaTabelaLOG()
 
         else: #sair do programa
             print("Você saiu do programa. Obrigado por usar...\n")
