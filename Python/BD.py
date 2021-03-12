@@ -223,6 +223,9 @@ class BD(object):
     return pd.DataFrame(res) 
 
   def consultaPais(self):
-    res = self.execSelect(f"""SELECT DISTINCT id, NOME FROM PAIS;""")
+    res = self.execSelect(f"""SELECT DISTINCT id, NOME, SIGLA FROM PAIS;""")
     return pd.DataFrame(res) 
-                 
+
+  def consultaSumary(self, id, data):
+    res = self.execSelect(f"""SELECT DISTINCT id FROM SUMARY_PAISES WHERE id_pais = {id} and [date] >= CAST( '{data}' AS Date );""")
+    return pd.DataFrame(res) 

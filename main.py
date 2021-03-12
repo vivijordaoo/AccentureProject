@@ -76,7 +76,7 @@ class Main(object):
 
     def carregaAPICOUNTRY_TabelaPAIS(self, doBuffer: bool = False):
         print(f"{datetime.now().strftime('%H:%M:%S')} Carregando PAIS da API para TABELA")
-        df_country = self.baixaPAISAPI(doBuffer)
+        df_country = self.baixaAPIPAIS(doBuffer)
         df_country = self.processaDFPais(df_country)
         self.carregaPAISTabela(df_country)
         print(f"{datetime.now().strftime('%H:%M:%S')} Finalizado... ")
