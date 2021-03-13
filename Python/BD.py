@@ -3,7 +3,6 @@ from datetime import date, datetime
 import pandas as pd
 
 class BD(object):
-  """
   __server = 'datazilla.database.windows.net'
   __database = 'datazilla'
   __username = 'datazilla'
@@ -13,6 +12,7 @@ class BD(object):
   __database = 'Datazilla'
   __username = 'sa'
   __password = '251x2mdlltfd'   
+  """
     
   __port= '1433'
   __driver= '{SQL Server}'
